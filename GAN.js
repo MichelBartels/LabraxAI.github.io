@@ -366,6 +366,6 @@ function GAN(epoch_callback) {
         }, 10);
     });
 };
-function break() {
+function stop_training() {
     clearInterval(window.interval);
 };
