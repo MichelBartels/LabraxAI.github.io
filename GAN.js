@@ -9,18 +9,18 @@ function GAN(epoch_callback) {
 
     new MNIST(function (MNIST_DATASET) {
         console.log("MNIST dataset loaded");
-        let generator_w1 = new Matrix(new_random_array(200 * BATCH_SIZE, -1, 1), 200, 320);
-        let generator_matmul1 = create_multiply_function(BATCH_SIZE, 200, 320);
-        let generator_b1 = new Vector(320, 0);
-        let generator_add1 = create_matrix_vector_add_function(BATCH_SIZE, 320);
-        let generator_layer1 = create_relu_function(BATCH_SIZE * 320);
-        let generator_w2 = new Matrix(new_random_array(320 * 480, -0.1, 0.1), 320, 480);
-        let generator_matmul2 = create_multiply_function(BATCH_SIZE, 320, 480);
-        let generator_b2 = new Vector(480);
-        let generator_add2 = create_matrix_vector_add_function(BATCH_SIZE, 480);
-        let generator_layer2 = create_relu_function(BATCH_SIZE * 480);
-        let generator_w3 = new Matrix(new_random_array(480 * 784, -0.1, 0.1), 480, 784);
-        let generator_matmul3 = create_multiply_function(BATCH_SIZE, 480, 784);
+        let generator_w1 = new Matrix(new_random_array(200 * BATCH_SIZE, -1, 1), 200, 256);
+        let generator_matmul1 = create_multiply_function(BATCH_SIZE, 200, 256);
+        let generator_b1 = new Vector(256, 0);
+        let generator_add1 = create_matrix_vector_add_function(BATCH_SIZE, 256);
+        let generator_layer1 = create_relu_function(BATCH_SIZE * 256);
+        let generator_w2 = new Matrix(new_random_array(256 * 256, -0.1, 0.1), 256, 256);
+        let generator_matmul2 = create_multiply_function(BATCH_SIZE, 256, 256);
+        let generator_b2 = new Vector(256);
+        let generator_add2 = create_matrix_vector_add_function(BATCH_SIZE, 256);
+        let generator_layer2 = create_relu_function(BATCH_SIZE * 256);
+        let generator_w3 = new Matrix(new_random_array(256 * 784, -0.1, 0.1), 256, 784);
+        let generator_matmul3 = create_multiply_function(BATCH_SIZE, 256, 784);
         let generator_b3 = new Vector(784);
         let generator_add3 = create_matrix_vector_add_function(BATCH_SIZE, 784);
         let generator_output = create_tanh_function(784 * BATCH_SIZE);
@@ -61,33 +61,33 @@ function GAN(epoch_callback) {
         let discriminator_b1_apply_adjustments = create_matrix_matrix_subtract_function(128, 1);
 
         let generator_slope_output_layer = create_relu_function(BATCH_SIZE * 784, true);
-        let generator_slope_layer_2 = create_relu_function(BATCH_SIZE * 480, true);
-        let generator_slope_layer_1 = create_relu_function(BATCH_SIZE * 320, true);
+        let generator_slope_layer_2 = create_relu_function(BATCH_SIZE * 256, true);
+        let generator_slope_layer_1 = create_relu_function(BATCH_SIZE * 256, true);
         let generator_error_at_output_layer = create_multiply_function(BATCH_SIZE, 128, 784);
         let generator_derivative_output_layer = create_multiply_function(BATCH_SIZE, 784, "matrix");
-        let generator_error_at_layer_2 = create_multiply_function(BATCH_SIZE, 784, 480);
-        let generator_derivative_layer_2 = create_multiply_function(BATCH_SIZE, 480, "matrix");
-        let generator_error_at_layer_1 = create_multiply_function(BATCH_SIZE, 480, 320);
-        let generator_derivative_layer_1 = create_multiply_function(BATCH_SIZE, 320, "matrix");
+        let generator_error_at_layer_2 = create_multiply_function(BATCH_SIZE, 784, 256);
+        let generator_derivative_layer_2 = create_multiply_function(BATCH_SIZE, 256, "matrix");
+        let generator_error_at_layer_1 = create_multiply_function(BATCH_SIZE, 256, 256);
+        let generator_derivative_layer_1 = create_multiply_function(BATCH_SIZE, 256, "matrix");
 
-        let generator_w3_adjustments = create_multiply_function(480, BATCH_SIZE, 784);
-        let generator_w3_adjustments_learning_rate = create_multiply_function(480, 784, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_w3_apply_adjustments = create_matrix_matrix_subtract_function(480, 784);
+        let generator_w3_adjustments = create_multiply_function(256, BATCH_SIZE, 784);
+        let generator_w3_adjustments_learning_rate = create_multiply_function(256, 784, "scalar", LEARNING_RATE_GENERATOR);
+        let generator_w3_apply_adjustments = create_matrix_matrix_subtract_function(256, 784);
         let generator_b3_adjustments = create_sum_function(BATCH_SIZE, 784);
         let generator_b3_adjustments_learning_rate = create_multiply_function(784, 1, "scalar", LEARNING_RATE_GENERATOR);
         let generator_b3_apply_adjustments = create_matrix_matrix_subtract_function(784, 1);
-        let generator_w2_adjustments = create_multiply_function(320, BATCH_SIZE, 480);
-        let generator_w2_adjustments_learning_rate = create_multiply_function(320, 480, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_w2_apply_adjustments = create_matrix_matrix_subtract_function(320, 480);
-        let generator_b2_adjustments = create_sum_function(BATCH_SIZE, 480);
-        let generator_b2_adjustments_learning_rate = create_multiply_function(480, 1, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_b2_apply_adjustments = create_matrix_matrix_subtract_function(480, 1);
-        let generator_w1_adjustments = create_multiply_function(200, BATCH_SIZE, 320);
-        let generator_w1_adjustments_learning_rate = create_multiply_function(200, 320, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_w1_apply_adjustments = create_matrix_matrix_subtract_function(200, 320);
-        let generator_b1_adjustments = create_sum_function(BATCH_SIZE, 320);
-        let generator_b1_adjustments_learning_rate = create_multiply_function(320, 1, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_b1_apply_adjustments = create_matrix_matrix_subtract_function(320, 1);
+        let generator_w2_adjustments = create_multiply_function(256, BATCH_SIZE, 256);
+        let generator_w2_adjustments_learning_rate = create_multiply_function(256, 256, "scalar", LEARNING_RATE_GENERATOR);
+        let generator_w2_apply_adjustments = create_matrix_matrix_subtract_function(256, 256);
+        let generator_b2_adjustments = create_sum_function(BATCH_SIZE, 256);
+        let generator_b2_adjustments_learning_rate = create_multiply_function(256, 1, "scalar", LEARNING_RATE_GENERATOR);
+        let generator_b2_apply_adjustments = create_matrix_matrix_subtract_function(256, 1);
+        let generator_w1_adjustments = create_multiply_function(200, BATCH_SIZE, 256);
+        let generator_w1_adjustments_learning_rate = create_multiply_function(200, 256, "scalar", LEARNING_RATE_GENERATOR);
+        let generator_w1_apply_adjustments = create_matrix_matrix_subtract_function(200, 256);
+        let generator_b1_adjustments = create_sum_function(BATCH_SIZE, 256);
+        let generator_b1_adjustments_learning_rate = create_multiply_function(256, 1, "scalar", LEARNING_RATE_GENERATOR);
+        let generator_b1_apply_adjustments = create_matrix_matrix_subtract_function(256, 1);
 
         let epoch = 0;
         setInterval(function() {
@@ -192,7 +192,7 @@ function GAN(epoch_callback) {
             let generator_w2_transpose_ = new Matrix(generator_w2.array, 128, 784).transpose_matrix;
             let generator_error_at_layer_1_ = generator_error_at_layer_1(generator_derivative_layer_2_, generator_w2_transpose_.array);
             let generator_derivative_layer_1_ = generator_derivative_layer_1(generator_slope_layer_1_, generator_error_at_layer_1_);
-            let generator_layer_2_y_transpose_ = new Matrix(generator_layer_2_y, BATCH_SIZE, 320).transpose_matrix;
+            let generator_layer_2_y_transpose_ = new Matrix(generator_layer_2_y, BATCH_SIZE, 256).transpose_matrix;
             let generator_layer_1_y_transpose_ = new Matrix(generator_layer_1_y, BATCH_SIZE, 128).transpose_matrix;
             let generator_noise_transpose_ = new Matrix(noise, BATCH_SIZE, 200).transpose_matrix;
 
@@ -222,11 +222,11 @@ function GAN(epoch_callback) {
             discriminator_b1 = new Vector(discriminator_b1_apply_adjustments(discriminator_b1.array, discriminator_b1_adjustments_learning_rate_fake_));
 
             // Optimize generator
-            generator_w2 = new Matrix(generator_w2_apply_adjustments(generator_w2.array, generator_w2_adjustments_learning_rate_), 480, 784);
+            generator_w2 = new Matrix(generator_w2_apply_adjustments(generator_w2.array, generator_w2_adjustments_learning_rate_), 256, 784);
             generator_b2 = new Vector(generator_b2_apply_adjustments(generator_b2.array, generator_b2_adjustments_learning_rate_));
-            generator_w2 = new Matrix(generator_w2_apply_adjustments(generator_w2.array, generator_w2_adjustments_learning_rate_), 320, 480);
+            generator_w2 = new Matrix(generator_w2_apply_adjustments(generator_w2.array, generator_w2_adjustments_learning_rate_), 256, 256);
             generator_b2 = new Vector(generator_b2_apply_adjustments(generator_b2.array, generator_b2_adjustments_learning_rate_));
-            generator_w1 = new Matrix(generator_w1_apply_adjustments(generator_w1.array, generator_w1_adjustments_learning_rate_), 1, 320);
+            generator_w1 = new Matrix(generator_w1_apply_adjustments(generator_w1.array, generator_w1_adjustments_learning_rate_), 1, 256);
             generator_b1 = new Vector(generator_b1_apply_adjustments(generator_b1.array, generator_b1_adjustments_learning_rate_));
 
             console.log("Epoch: " + epoch + " Discriminator error real: " + new Matrix(discriminator_error_real, BATCH_SIZE, 1).mean_squared_error);
