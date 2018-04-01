@@ -197,8 +197,6 @@ function GAN(epoch_callback) {
             let generator_layer_4_y = generator_layer4(generator_layer_4_y_no_activation);
             let generator_layer_5_y_no_activation = generator_add5(generator_matmul5(generator_layer_4_y, generator_w5.array), generator_b5.array);
             let generator_layer_5_y = generator_layer5(generator_layer_5_y_no_activation);
-            let generator_layer_5_y_no_activation = generator_add5(generator_matmul5(generator_layer_4_y, generator_w5.array), generator_b5.array);
-            let generator_layer_5_y = generator_layer5(generator_layer_5_y_no_activation);
             let generator_layer_6_y_no_activation = generator_add6(generator_matmul6(generator_layer_5_y, generator_w6.array), generator_b6.array);
             let generator_layer_6_y = generator_layer6(generator_layer_6_y_no_activation);
             let generator_y = generator_output(generator_add7(generator_matmul7(generator_layer_6_y, generator_w7.array), generator_b7.array));
