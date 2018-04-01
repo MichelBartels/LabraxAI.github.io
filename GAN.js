@@ -153,8 +153,8 @@ function GAN(epoch_callback) {
         let generator_b1_adjustments_learning_rate = create_multiply_function(generator_neurons_layer_1, 1, "scalar", LEARNING_RATE_GENERATOR);
         let generator_b1_apply_adjustments = create_matrix_matrix_subtract_function(generator_neurons_layer_1, 1);
 
-        let epoch = 0;
-        setInterval(function() {
+        window.epoch = 0;
+        window.interval = setInterval(function() {
             // Classify real images
             let batch = MNIST_DATASET.next_batch(BATCH_SIZE);
             
@@ -362,7 +362,10 @@ function GAN(epoch_callback) {
             console.log("Epoch: " + epoch + " Generator error: " + new Matrix(generator_error, BATCH_SIZE, 1).mean_squared_error);
 
             epoch_callback(generator_y, new Matrix(discriminator_error_real, BATCH_SIZE, 1).mean_squared_error, new Matrix(discriminator_error_fake, BATCH_SIZE, 1).mean_squared_error, new Matrix(generator_error, BATCH_SIZE, 1).mean_squared_error)
-            epoch++;
+            window.epoch++;
         }, 10);
     });
+};
+function break() {
+    clearInterval(window.interval);
 };
