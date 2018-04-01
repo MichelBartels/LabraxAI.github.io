@@ -3,7 +3,7 @@ function GAN(epoch_callback) {
     const NUMBER_OF_EPOCHS = 10000;
     const LEARNING_RATE_DISCRIMINATOR_REAL = 0.00009;
     const LEARNING_RATE_DISCRIMINATOR_FAKE = 0.00009;
-    const LEARNING_RATE_GENERATOR = 0.001;
+    const LEARNING_RATE_GENERATOR = 0.00009;
 
     console.log("Loading MNIST dataset");
 
