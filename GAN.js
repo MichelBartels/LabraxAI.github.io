@@ -229,7 +229,7 @@ function GAN(epoch_callback) {
             let discriminator_b1_adjustments_learning_rate_fake_ = discriminator_b1_adjustments_learning_rate_fake(discriminator_b1_adjustments_fake);
 
             // Generate fake images
-            noise = new_random_array(BATCH_SIZE * 100, -1, 1);
+            noise = new_random_array(BATCH_SIZE * noise_dimensions, -1, 1);
             generator_layer_1_y_no_activation = generator_add1(generator_matmul1(noise, generator_w1.array), generator_b1.array);
             generator_layer_1_y = generator_layer1(generator_layer_1_y_no_activation);
             generator_layer_2_y_no_activation = generator_add2(generator_matmul2(generator_layer_1_y, generator_w2.array), generator_b2.array);
