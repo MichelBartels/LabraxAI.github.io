@@ -3,7 +3,7 @@ var create_sigmoid_function = function(input) {
         return gpu.createKernel(function(number){
             let gradient = number[this.thread.x] * (1 - number[this.thread.x]);
             if (gradient < 0.000001) {
-                return 0.0001;
+                return 0.000001;
             } else {
                 return gradient;
             };
