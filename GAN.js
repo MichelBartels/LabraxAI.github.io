@@ -108,49 +108,6 @@ function GAN(epoch_callback) {
             generator_b_apply_adjustments.push(create_matrix_matrix_subtract_function(generator_structure[layer], 1));
         };
 
-        let generator_w7_adjustments = create_multiply_function(generator_neurons_layer_6, BATCH_SIZE, generator_neurons_layer_7);
-        let generator_w7_adjustments_learning_rate = create_multiply_function(generator_neurons_layer_6, generator_neurons_layer_7, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_w7_apply_adjustments = create_matrix_matrix_subtract_function(generator_neurons_layer_6, generator_neurons_layer_7);
-        let generator_b7_adjustments = create_sum_function(BATCH_SIZE, generator_neurons_layer_7);
-        let generator_b7_adjustments_learning_rate = create_multiply_function(generator_neurons_layer_7, 1, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_b7_apply_adjustments = create_matrix_matrix_subtract_function(generator_neurons_layer_7, 1);
-        let generator_w6_adjustments = create_multiply_function(256, BATCH_SIZE, generator_neurons_layer_6);
-        let generator_w6_adjustments_learning_rate = create_multiply_function(generator_neurons_layer_5, generator_neurons_layer_6, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_w6_apply_adjustments = create_matrix_matrix_subtract_function(generator_neurons_layer_5, generator_neurons_layer_6);
-        let generator_b6_adjustments = create_sum_function(BATCH_SIZE, generator_neurons_layer_6);
-        let generator_b6_adjustments_learning_rate = create_multiply_function(generator_neurons_layer_6, 1, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_b6_apply_adjustments = create_matrix_matrix_subtract_function(generator_neurons_layer_6, 1);
-        let generator_w5_adjustments = create_multiply_function(generator_neurons_layer_4, BATCH_SIZE, generator_neurons_layer_5);
-        let generator_w5_adjustments_learning_rate = create_multiply_function(generator_neurons_layer_4, generator_neurons_layer_5, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_w5_apply_adjustments = create_matrix_matrix_subtract_function(generator_neurons_layer_4, generator_neurons_layer_5);
-        let generator_b5_adjustments = create_sum_function(BATCH_SIZE, generator_neurons_layer_5);
-        let generator_b5_adjustments_learning_rate = create_multiply_function(generator_neurons_layer_5, 1, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_b5_apply_adjustments = create_matrix_matrix_subtract_function(generator_neurons_layer_5, 1);
-        let generator_w4_adjustments = create_multiply_function(generator_neurons_layer_3, BATCH_SIZE, generator_neurons_layer_4);
-        let generator_w4_adjustments_learning_rate = create_multiply_function(generator_neurons_layer_3, generator_neurons_layer_4, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_w4_apply_adjustments = create_matrix_matrix_subtract_function(generator_neurons_layer_3, generator_neurons_layer_4);
-        let generator_b4_adjustments = create_sum_function(BATCH_SIZE, generator_neurons_layer_4);
-        let generator_b4_adjustments_learning_rate = create_multiply_function(generator_neurons_layer_4, 1, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_b4_apply_adjustments = create_matrix_matrix_subtract_function(generator_neurons_layer_4, 1);
-        let generator_w3_adjustments = create_multiply_function(generator_neurons_layer_2, BATCH_SIZE, generator_neurons_layer_3);
-        let generator_w3_adjustments_learning_rate = create_multiply_function(generator_neurons_layer_2, generator_neurons_layer_3, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_w3_apply_adjustments = create_matrix_matrix_subtract_function(generator_neurons_layer_2, generator_neurons_layer_3);
-        let generator_b3_adjustments = create_sum_function(BATCH_SIZE, generator_neurons_layer_3);
-        let generator_b3_adjustments_learning_rate = create_multiply_function(generator_neurons_layer_3, 1, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_b3_apply_adjustments = create_matrix_matrix_subtract_function(generator_neurons_layer_3, 1);
-        let generator_w2_adjustments = create_multiply_function(generator_neurons_layer_1, BATCH_SIZE, generator_neurons_layer_2);
-        let generator_w2_adjustments_learning_rate = create_multiply_function(generator_neurons_layer_1, generator_neurons_layer_2, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_w2_apply_adjustments = create_matrix_matrix_subtract_function(generator_neurons_layer_1, generator_neurons_layer_2);
-        let generator_b2_adjustments = create_sum_function(BATCH_SIZE, generator_neurons_layer_2);
-        let generator_b2_adjustments_learning_rate = create_multiply_function(generator_neurons_layer_2, 1, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_b2_apply_adjustments = create_matrix_matrix_subtract_function(generator_neurons_layer_2, 1);
-        let generator_w1_adjustments = create_multiply_function(noise_dimensions, BATCH_SIZE, generator_neurons_layer_1);
-        let generator_w1_adjustments_learning_rate = create_multiply_function(noise_dimensions, generator_neurons_layer_1, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_w1_apply_adjustments = create_matrix_matrix_subtract_function(noise_dimensions, generator_neurons_layer_1);
-        let generator_b1_adjustments = create_sum_function(BATCH_SIZE, generator_neurons_layer_1);
-        let generator_b1_adjustments_learning_rate = create_multiply_function(generator_neurons_layer_1, 1, "scalar", LEARNING_RATE_GENERATOR);
-        let generator_b1_apply_adjustments = create_matrix_matrix_subtract_function(generator_neurons_layer_1, 1);
-
         window.epoch = 0;
         window.interval = setInterval(function() {
             // Classify real images
