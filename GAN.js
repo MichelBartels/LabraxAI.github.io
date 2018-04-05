@@ -235,7 +235,7 @@ function GAN(epoch_callback) {
             
             for (let layer = generator_structure.length - 1; layer >= 0; layer++) {
                 if (layer == generator_structure.length - 1) {
-                    console.log(layer);
+                    console.log(generator_error[layer]);
                     generator_error_[layer] = generator_error[layer](generator_discriminator_derivative_hidden_layer_fake, generator_w_transpose[layer]);
                 } else {
                     generator_error_[layer] = generator_error[layer](generator_error_[layer + 1], generator_w_transpose[layer]);
