@@ -88,10 +88,10 @@ function GAN(epoch_callback) {
         for (let layer = 0; layer < generator_structure.length; layer++) {
             if (layer == (generator_structure.length - 1)) {
                 generator_slope.push(create_tanh_function(BATCH_SIZE, generator_structure[layer], true));;
-                generator_error.push(BATCH_SIZE, discriminator_structure[discriminator_structure.length - 1], generator_structure[layer]);
+                generator_error.push(create_multiply_function(BATCH_SIZE, discriminator_structure[discriminator_structure.length - 1], generator_structure[layer]));
             } else {
                 generator_slope.push(create_relu_function(BATCH_SIZE, generator_structure[layer], true));;
-                generator_error.push(BATCH_SIZE, generator_structure[layer + 1], generator_structure[layer]);                
+                generator_error.push(create_multiply_function(BATCH_SIZE, generator_structure[layer + 1], generator_structure[layer]));
             };
             generator_delta.push(create_multiply_function(BATCH_SIZE, generator_structure[layer]));
             if (layer == 0) {
