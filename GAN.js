@@ -148,7 +148,7 @@ function GAN(epoch_callback) {
                     generator_x.push(new_random_array(BATCH_SIZE * noise_dimensions, -1, 1));
                     generator_x_no_activation.push(new_random_array(BATCH_SIZE * noise_dimensions, -1, 1));
                 } else {
-                    generator_x_no_activation.push(generator_add[layer](generator_matmul[layer](x[layer - 1], generator_w[layer].array), generator_b[layer]));
+                    generator_x_no_activation.push(generator_add[layer](generator_matmul[layer](x[layer - 1], generator_w[layer].array), generator_b[layer].array));
                     generator_x.push(generator_layer[layer](x_no_activation[layer]));
                 };
             };
