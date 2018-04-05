@@ -93,7 +93,7 @@ function GAN(epoch_callback) {
                 generator_slope.push(create_relu_function(BATCH_SIZE, generator_structure[layer], true));;
                 generator_error.push(create_multiply_function(BATCH_SIZE, generator_structure[layer + 1], generator_structure[layer]));
             };
-            generator_delta.push(create_multiply_function(BATCH_SIZE, generator_structure[layer]));
+            generator_delta.push(create_multiply_function(BATCH_SIZE, generator_structure[layer], "matrix"));
             if (layer == 0) {
                 generator_w_adjustments.push(create_multiply_function(noise_dimensions, BATCH_SIZE, generator_structure[layer]));
                 generator_w_adjustments_learning_rate.push(create_multiply_function(noise_dimensions, generator_structure[layer], "scalar", LEARNING_RATE_GENERATOR));
