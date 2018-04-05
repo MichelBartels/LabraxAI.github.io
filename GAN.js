@@ -272,7 +272,7 @@ function GAN(epoch_callback) {
             console.log("Epoch: " + epoch + " Discriminator error fake: " + new Matrix(discriminator_error_fake, BATCH_SIZE, 1).mean_squared_error);
             console.log("Epoch: " + epoch + " Generator error: " + new Matrix(generator_loss, BATCH_SIZE, 1).mean_squared_error);
 
-            epoch_callback(generator_x[generator_x.length - 1], new Matrix(discriminator_error_real, BATCH_SIZE, 1).mean_squared_error, new Matrix(discriminator_error_fake, BATCH_SIZE, 1).mean_squared_error, new Matrix(generator_error, BATCH_SIZE, 1).mean_squared_error)
+            epoch_callback(generator_x[generator_x.length - 1], new Matrix(discriminator_error_real, BATCH_SIZE, 1).mean_squared_error, new Matrix(discriminator_error_fake, BATCH_SIZE, 1).mean_squared_error, new Matrix(generator_loss, BATCH_SIZE, 1).mean_squared_error)
             window.epoch++;
         }, 10);
     });
