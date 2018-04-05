@@ -227,9 +227,9 @@ function GAN(epoch_callback) {
                     generator_w_transpose.push(new Matrix(generator_w[layer + 1], generator_structure[layer], generator_structure[layer + 1]).transpose_matrix.array);
                 };
                 if (layer == 0) {
-                    generator_layer_transpose.push(new Matrix(noise, BATCH_SIZE, noise_dimensions).transpose_matrix.array);
+                    generator_layer_transpose.push(new Matrix(generator_x[layer], BATCH_SIZE, noise_dimensions).transpose_matrix.array);
                 } else {
-                    generator_layer_transpose.push(new Matrix(generator_layer_[layer - 1], BATCH_SIZE, generator_structure[layer + 1]).array);
+                    generator_layer_transpose.push(new Matrix(generator_x[layer], BATCH_SIZE, generator_structure[layer + 1]).array);
                 };
             };
             
