@@ -12,7 +12,7 @@ function GAN(epoch_callback) {
     const generator_neurons_layer_5 = 560;
     const generator_neurons_layer_6 = 672;
     const generator_neurons_layer_7 = 784;
-    const generator_structure = [112, 224, 336, 448,  560, 672, 784];
+    const generator_structure = [112, 224, 336, 448, 560, 672, 784];
     const discriminator_structure = [128, 1];
 
     console.log("Loading MNIST dataset");
@@ -235,6 +235,7 @@ function GAN(epoch_callback) {
             
             for (let layer = generator_structure.length - 1; layer >= 0; layer++) {
                 if (layer == generator_structure.length - 1) {
+                    console.log(layer);
                     generator_error_[layer] = generator_error[layer](generator_discriminator_derivative_hidden_layer_fake, generator_w_transpose[layer]);
                 } else {
                     generator_error_[layer] = generator_error[layer](generator_error_[layer + 1], generator_w_transpose[layer]);
