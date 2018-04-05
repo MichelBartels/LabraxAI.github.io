@@ -1,9 +1,9 @@
 function GAN(epoch_callback) {
     const BATCH_SIZE = 100;
     const NUMBER_OF_EPOCHS = 10000;
-    const LEARNING_RATE_DISCRIMINATOR_REAL = 0.00009;
-    const LEARNING_RATE_DISCRIMINATOR_FAKE = 0.00009;
-    const LEARNING_RATE_GENERATOR = 0.00009;
+    const LEARNING_RATE_DISCRIMINATOR_REAL = 0.001;
+    const LEARNING_RATE_DISCRIMINATOR_FAKE = 0.001;
+    const LEARNING_RATE_GENERATOR = 0.001;
     const noise_dimensions = 100;
     const generator_neurons_layer_1 = 112;
     const generator_neurons_layer_2 = 224;
