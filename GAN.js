@@ -87,10 +87,10 @@ function GAN(epoch_callback) {
         let generator_b_apply_adjustments = [];
         for (let layer = 0; layer < generator_structure.length; layer++) {
             if (layer == (generator_structure.length - 1)) {
-                generator_slope.push(create_tanh_function(BATCH_SIZE, generator_structure[layer]), true);;
+                generator_slope.push(create_tanh_function(BATCH_SIZE, generator_structure[layer], true));;
                 generator_error.push(BATCH_SIZE, discriminator_structure[discriminator_structure.length - 1], generator_structure[layer]);
             } else {
-                generator_slope.push(create_relu_function(BATCH_SIZE, generator_structure[layer]), true);;
+                generator_slope.push(create_relu_function(BATCH_SIZE, generator_structure[layer], true));;
                 generator_error.push(BATCH_SIZE, generator_structure[layer + 1], generator_structure[layer]);                
             };
             generator_delta.push(create_multiply_function(BATCH_SIZE, generator_structure[layer]));
@@ -107,7 +107,6 @@ function GAN(epoch_callback) {
             generator_b_adjustments_learning_rate.push(create_multiply_function(generator_structure[layer], 1, "scalar", LEARNING_RATE_GENERATOR))
             generator_b_apply_adjustments.push(create_matrix_matrix_subtract_function(generator_structure[layer], 1));
         };
-        console.log(generator_slope);
 
         window.epoch = 0;
         window.interval = setInterval(function() {
