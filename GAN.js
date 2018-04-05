@@ -79,9 +79,12 @@ function GAN(epoch_callback) {
         let generator_slope = [];
         let generator_error = [];
         let generator_delta = [];
-        let generator_adjustments = [];
-        let generator_adjustments_learning_rate = [];
-        let generator_apply_adjustments = [];
+        let generator_w_adjustments = [];
+        let generator_w_adjustments_learning_rate = [];
+        let generator_w_apply_adjustments = [];
+        let generator_b_adjustments = [];
+        let generator_b_adjustments_learning_rate = [];
+        let generator_b_apply_adjustments = [];
         for (let layer = 0; layer < generator_structure.length; layer++) {
             if (layer == (generator_structure.length - 1)) {
                 generator_slope.push(create_tanh_function(BATCH_SIZE, generator_structure[layer]), true);;
@@ -91,9 +94,18 @@ function GAN(epoch_callback) {
                 generator_error.push(BATCH_SIZE, generator_structure[layer + 1], generator_structure[layer]);                
             };
             generator_delta.push(create_multiply_function(BATCH_SIZE, generator_structure[layer]));
-            generator_adjustments.push(create_multiply_function(generator_structure[layer - 1], BATCH_SIZE, generator_structure[layer]));
-            generator_adjustments_learning_rate.push(create_multiply_function(generator_structure[layer - 1], generator_structure[layer], "scalar", LEARNING_RATE_GENERATOR));
-
+            if (layer == 0) {
+                generator_w_adjustments.push(create_multiply_function(noise_dimensions, BATCH_SIZE, generator_structure[layer]));
+                generator_w_adjustments_learning_rate.push(create_multiply_function(noise_dimensions, generator_structure[layer], "scalar", LEARNING_RATE_GENERATOR));
+                generator_w_apply_adjustments.push(create_matrix_matrix_subtract_function(noise_dimensions, generator_structure[layer]));
+            } else {
+                generator_w_adjustments.push(create_multiply_function(generator_structure[layer - 1], BATCH_SIZE, generator_structure[layer]));
+                generator_w_adjustments_learning_rate.push(create_multiply_function(generator_structure[layer - 1], generator_structure[layer], "scalar", LEARNING_RATE_GENERATOR));
+                generator_w_apply_adjustments.push(create_matrix_matrix_subtract_function(generator_structure[layer - 1], generator_structure[layer]))
+            };
+            generator_b_adjustments.push(create_sum_function(BATCH_SIZE, generator_structure[layer]));
+            generator_b_adjustments_learning_rate.push(create_multiply_function(generator_structure[layer], 1, "scalar", LEARNING_RATE_GENERATOR))
+            generator_b_apply_adjustments.push(create_matrix_matrix_subtract_function(generator_structure[layer], 1));
         };
 
         let generator_w7_adjustments = create_multiply_function(generator_neurons_layer_6, BATCH_SIZE, generator_neurons_layer_7);
@@ -172,20 +184,20 @@ function GAN(epoch_callback) {
             let discriminator_b1_adjustments_learning_rate_real_ = discriminator_b1_adjustments_learning_rate_real(discriminator_b1_adjustments_real);
             
             // Generate fake images
-            let x_no_activation = [];
-            let x = [];
+            let generator_x_no_activation = [];
+            let generator_x = [];
             for (let layer = 0; layer < generator_structure.length; layer++) {
                 if (layer == 0) {
-                    x.push(new_random_array(BATCH_SIZE * noise_dimensions, -1, 1));
-                    x_no_activation.push(new_random_array(BATCH_SIZE * noise_dimensions, -1, 1));
+                    generator_x.push(new_random_array(BATCH_SIZE * noise_dimensions, -1, 1));
+                    generator_x_no_activation.push(new_random_array(BATCH_SIZE * noise_dimensions, -1, 1));
                 } else {
-                    x_no_activation.push(generator_add[layer](generator_matmul[layer](x[layer - 1], generator_w[layer]), generator_b[layer]));
-                    x.push(generator_layer[layer](x_no_activation[layer]));
+                    generator_x_no_activation.push(generator_add[layer](generator_matmul[layer](x[layer - 1], generator_w[layer].array), generator_b[layer]));
+                    generator_x.push(generator_layer[layer](x_no_activation[layer]));
                 };
             };
 
             // Classify fake images
-            let discriminator_layer_1_y_no_activation_fake = discriminator_add1(discriminator_matmul1(generator_y, discriminator_w1.array), discriminator_b1.array);
+            let discriminator_layer_1_y_no_activation_fake = discriminator_add1(discriminator_matmul1(generator_x[generator_x.length - 1], discriminator_w1.array), discriminator_b1.array);
             let discriminator_layer_1_y_fake = discriminator_layer1(discriminator_layer_1_y_no_activation_fake);
             let discriminator_y_fake = discriminator_output(discriminator_add2(discriminator_matmul2(discriminator_layer_1_y_fake, discriminator_w2.array), discriminator_b2.array));
 
@@ -212,22 +224,17 @@ function GAN(epoch_callback) {
             let discriminator_b1_adjustments_learning_rate_fake_ = discriminator_b1_adjustments_learning_rate_fake(discriminator_b1_adjustments_fake);
 
             // Generate fake images
-            noise = new_random_array(BATCH_SIZE * noise_dimensions, -1, 1);
-            generator_layer_1_y_no_activation = generator_add1(generator_matmul1(noise, generator_w1.array), generator_b1.array);
-            generator_layer_1_y = generator_layer1(generator_layer_1_y_no_activation);
-            generator_layer_2_y_no_activation = generator_add2(generator_matmul2(generator_layer_1_y, generator_w2.array), generator_b2.array);
-            generator_layer_2_y = generator_layer2(generator_layer_2_y_no_activation);
-            generator_layer_3_y_no_activation = generator_add3(generator_matmul3(generator_layer_2_y, generator_w3.array), generator_b3.array);
-            generator_layer_3_y = generator_layer3(generator_layer_3_y_no_activation);
-            generator_layer_4_y_no_activation = generator_add4(generator_matmul4(generator_layer_3_y, generator_w4.array), generator_b4.array);
-            generator_layer_4_y = generator_layer4(generator_layer_4_y_no_activation);
-            generator_layer_5_y_no_activation = generator_add5(generator_matmul5(generator_layer_4_y, generator_w5.array), generator_b5.array);
-            generator_layer_5_y = generator_layer5(generator_layer_5_y_no_activation);
-            generator_layer_5_y_no_activation = generator_add5(generator_matmul5(generator_layer_4_y, generator_w5.array), generator_b5.array);
-            generator_layer_5_y = generator_layer5(generator_layer_5_y_no_activation);
-            generator_layer_6_y_no_activation = generator_add6(generator_matmul6(generator_layer_5_y, generator_w6.array), generator_b6.array);
-            generator_layer_6_y = generator_layer6(generator_layer_6_y_no_activation);
-            generator_y = generator_output(generator_add7(generator_matmul7(generator_layer_6_y, generator_w7.array), generator_b7.array));
+            generator_x_no_activation = [];
+            generator_x = [];
+            for (let layer = 0; layer < generator_structure.length; layer++) {
+                if (layer == 0) {
+                    generator_x_no_activation.push(new_random_array(BATCH_SIZE * noise_dimensions, -1, 1));
+                    generator_x.push(generator_x_no_activation[layer]);
+                } else {
+                    generator_x_no_activation.push(generator_add[layer](generator_matmul[layer](x[layer - 1], generator_w[layer].array), generator_b[layer]));
+                    generator_x.push(generator_layer[layer](x_no_activation[layer]));
+                };
+            };
 
             // Classify fake images
             discriminator_layer_1_y_no_activation_fake = discriminator_add1(discriminator_matmul1(generator_y, discriminator_w1.array), discriminator_b1.array);
@@ -245,70 +252,42 @@ function GAN(epoch_callback) {
             let generator_discriminator_error_at_hidden_layer_fake = discriminator_error_at_hidden_layer(generator_discriminator_derivative_output_fake, discriminator_w2_transpose_.array);
             let generator_discriminator_derivative_hidden_layer_fake = discriminator_derivative_hidden_layer(generator_discriminator_slope_hidden_layer_fake, generator_discriminator_error_at_hidden_layer_fake);
 
-            let generator_slope_output_layer_ = generator_slope_output_layer(generator_y);
-            let generator_slope_layer_6_ = generator_slope_layer_2(generator_layer_6_y_no_activation);
-            let generator_slope_layer_5_ = generator_slope_layer_1(generator_layer_5_y_no_activation);
-            let generator_slope_layer_4_ = generator_slope_layer_2(generator_layer_4_y_no_activation);
-            let generator_slope_layer_3_ = generator_slope_layer_1(generator_layer_3_y_no_activation);
-            let generator_slope_layer_2_ = generator_slope_layer_2(generator_layer_2_y_no_activation);
-            let generator_slope_layer_1_ = generator_slope_layer_1(generator_layer_1_y_no_activation);
-            let discriminator_w1_transpose_ = new Matrix(discriminator_w1.array, generator_neurons_layer_7, 128).transpose_matrix;
-            let generator_error_at_output_layer_ = generator_error_at_output_layer(generator_discriminator_derivative_hidden_layer_fake, discriminator_w1_transpose_.array);
-            let generator_derivative_output_layer_ = generator_derivative_output_layer(generator_slope_output_layer_, generator_error_at_output_layer_);
-            let generator_w7_transpose_ = new Matrix(generator_w3.array, generator_neurons_layer_6, generator_neurons_layer_7).transpose_matrix;
-            let generator_error_at_layer_6_ = generator_error_at_layer_6(generator_derivative_output_layer_, generator_w7_transpose_.array);
-            let generator_derivative_layer_6_ = generator_derivative_layer_6(generator_slope_layer_2_, generator_error_at_layer_6_);
-            let generator_w6_transpose_ = new Matrix(generator_w3.array, generator_neurons_layer_5, generator_neurons_layer_6).transpose_matrix;
-            let generator_error_at_layer_5_ = generator_error_at_layer_5(generator_derivative_output_layer_, generator_w6_transpose_.array);
-            let generator_derivative_layer_5_ = generator_derivative_layer_5(generator_slope_layer_2_, generator_error_at_layer_5_);
-            let generator_w5_transpose_ = new Matrix(generator_w3.array, generator_neurons_layer_4, generator_neurons_layer_5).transpose_matrix;
-            let generator_error_at_layer_4_ = generator_error_at_layer_4(generator_derivative_output_layer_, generator_w5_transpose_.array);
-            let generator_derivative_layer_4_ = generator_derivative_layer_4(generator_slope_layer_2_, generator_error_at_layer_4_);
-            let generator_w4_transpose_ = new Matrix(generator_w3.array, generator_neurons_layer_3, generator_neurons_layer_4).transpose_matrix;
-            let generator_error_at_layer_3_ = generator_error_at_layer_3(generator_derivative_output_layer_, generator_w4_transpose_.array);
-            let generator_derivative_layer_3_ = generator_derivative_layer_3(generator_slope_layer_2_, generator_error_at_layer_3_);
-            let generator_w3_transpose_ = new Matrix(generator_w3.array, generator_neurons_layer_2, generator_neurons_layer_3).transpose_matrix;
-            let generator_error_at_layer_2_ = generator_error_at_layer_2(generator_derivative_output_layer_, generator_w3_transpose_.array);
-            let generator_derivative_layer_2_ = generator_derivative_layer_2(generator_slope_layer_2_, generator_error_at_layer_2_);
-            let generator_w2_transpose_ = new Matrix(generator_w2.array, generator_neurons_layer_1, generator_neurons_layer_2).transpose_matrix;
-            let generator_error_at_layer_1_ = generator_error_at_layer_1(generator_derivative_layer_2_, generator_w2_transpose_.array);
-            let generator_derivative_layer_1_ = generator_derivative_layer_1(generator_slope_layer_1_, generator_error_at_layer_1_);
-            let generator_layer_6_y_transpose_ = new Matrix(generator_layer_6_y, BATCH_SIZE, generator_neurons_layer_6).transpose_matrix;
-            let generator_layer_5_y_transpose_ = new Matrix(generator_layer_5_y, BATCH_SIZE, generator_neurons_layer_5).transpose_matrix;
-            let generator_layer_4_y_transpose_ = new Matrix(generator_layer_4_y, BATCH_SIZE, generator_neurons_layer_4).transpose_matrix;
-            let generator_layer_3_y_transpose_ = new Matrix(generator_layer_3_y, BATCH_SIZE, generator_neurons_layer_3).transpose_matrix;
-            let generator_layer_2_y_transpose_ = new Matrix(generator_layer_2_y, BATCH_SIZE, generator_neurons_layer_2).transpose_matrix;
-            let generator_layer_1_y_transpose_ = new Matrix(generator_layer_1_y, BATCH_SIZE, generator_neurons_layer_1).transpose_matrix;
-            let generator_noise_transpose_ = new Matrix(noise, BATCH_SIZE, noise_dimensions).transpose_matrix;
-
-            let generator_w7_adjustments_ = generator_w7_adjustments(generator_layer_6_y_transpose_.array, generator_derivative_output_layer_);
-            let generator_b7_adjustments_ = generator_b7_adjustments(generator_derivative_output_layer_);
-            let generator_w7_adjustments_learning_rate_ = generator_w7_adjustments_learning_rate(generator_w7_adjustments_);
-            let generator_b7_adjustments_learning_rate_ = generator_b7_adjustments_learning_rate(generator_b7_adjustments_);
-            let generator_w6_adjustments_ = generator_w6_adjustments(generator_layer_5_y_transpose_.array, generator_derivative_layer_6_);
-            let generator_b6_adjustments_ = generator_b6_adjustments(generator_derivative_layer_2_);
-            let generator_w6_adjustments_learning_rate_ = generator_w6_adjustments_learning_rate(generator_w6_adjustments_);
-            let generator_b6_adjustments_learning_rate_ = generator_b6_adjustments_learning_rate(generator_b6_adjustments_);
-            let generator_w5_adjustments_ = generator_w5_adjustments(generator_layer_4_y_transpose_.array, generator_derivative_layer_5_);
-            let generator_b5_adjustments_ = generator_b5_adjustments(generator_derivative_output_layer_);
-            let generator_w5_adjustments_learning_rate_ = generator_w5_adjustments_learning_rate(generator_w5_adjustments_);
-            let generator_b5_adjustments_learning_rate_ = generator_b5_adjustments_learning_rate(generator_b5_adjustments_);
-            let generator_w4_adjustments_ = generator_w4_adjustments(generator_layer_3_y_transpose_.array, generator_derivative_layer_4_);
-            let generator_b4_adjustments_ = generator_b4_adjustments(generator_derivative_layer_2_);
-            let generator_w4_adjustments_learning_rate_ = generator_w4_adjustments_learning_rate(generator_w4_adjustments_);
-            let generator_b4_adjustments_learning_rate_ = generator_b4_adjustments_learning_rate(generator_b4_adjustments_);
-            let generator_w3_adjustments_ = generator_w3_adjustments(generator_layer_2_y_transpose_.array, generator_derivative_layer_3_);
-            let generator_b3_adjustments_ = generator_b3_adjustments(generator_derivative_output_layer_);
-            let generator_w3_adjustments_learning_rate_ = generator_w3_adjustments_learning_rate(generator_w3_adjustments_);
-            let generator_b3_adjustments_learning_rate_ = generator_b3_adjustments_learning_rate(generator_b3_adjustments_);
-            let generator_w2_adjustments_ = generator_w2_adjustments(generator_layer_1_y_transpose_.array, generator_derivative_layer_2_);
-            let generator_b2_adjustments_ = generator_b2_adjustments(generator_derivative_layer_2_);
-            let generator_w2_adjustments_learning_rate_ = generator_w2_adjustments_learning_rate(generator_w2_adjustments_);
-            let generator_b2_adjustments_learning_rate_ = generator_b2_adjustments_learning_rate(generator_b2_adjustments_); 
-            let generator_w1_adjustments_ = generator_w1_adjustments(generator_noise_transpose_.array, generator_derivative_layer_1_);
-            let generator_b1_adjustments_ = generator_b1_adjustments(generator_derivative_layer_1_);
-            let generator_w1_adjustments_learning_rate_ = generator_w1_adjustments_learning_rate(generator_w1_adjustments_);
-            let generator_b1_adjustments_learning_rate_ = generator_b1_adjustments_learning_rate(generator_b1_adjustments_);
+            let generator_slope_ = [];
+            let generator_w_transpose = [];
+            let generator_layer_transpose = [];
+            let generator_error_ = [];
+            let generator_delta_ = [];
+            let generator_w_adjustments_ = [];
+            let generator_w_adjustments_learning_rate_ = [];
+            let generator_b_adjustments_ = [];
+            let generator_b_adjustments_learning_rate_ = [];
+            for (let layer = 0; layer < generator_structure.length; layer++) {
+                if (layer == generator_structure.length - 1) {
+                    generator_slope_.push(generator_slope[layer](generator_x[layer]));
+                    generator_w_transpose.push(new Matrix(discriminator_w1_transpose_, generator_structure[layer], generator_structure[layer + 1])).transpose_matrix.array;
+                } else {
+                    generator_slope_.push(generator_slope[layer](generator_x_no_activation[layer]));
+                    generator_w_transpose.push(new Matrix(generator_w[layer + 1], generator_structure[layer], generator_structure[layer + 1])).transpose_matrix.array;;
+                };
+                if (layer == 0) {
+                    generator_layer_transpose.push(new Matrix(noise, BATCH_SIZE, noise_dimensions).transpose_matrix.array);
+                } else {
+                    generator_layer_transpose.push(new Matrix(generator_layer_[layer + 1], BATCH_SIZE, generator_structure[layer + 1]).array);
+                };
+            };
+            
+            for (let layer = generator_structure.length - 1; layer >= 0; layer++) {
+                if (layer == generator_structure.length - 1) {
+                    generator_error_[layer] = generator_error[layer](generator_discriminator_derivative_hidden_layer_fake, generator_w_transpose[layer]);
+                } else {
+                    generator_error_[layer] = generator_error[layer](generator_error_[layer + 1], generator_w_transpose[layer]);
+                };
+                generator_delta_[layer] = generator_delta[layer](generator_slope_[layer], generator_error_[layer]);
+                generator_w_adjustments_.push(generator_w_adjustments[layer](generator_layer_transpose[layer], generator_delta_[layer]));
+                generator_w_adjustments_learning_rate_.push(generator_w_adjustments_learning_rate[layer](generator_w_adjustments_[layer]));
+                generator_b_adjustments_.push(generator_b_adjustments[layer](generator_delta_[layer]));
+                generator_b_adjustments_learning_rate_.push(generator_b_adjustments_learning_rate[layer](generator_b_adjustments_[layer]));
+            };
 
             // Optimize discriminator for classifying real images
             discriminator_w2 = new Matrix(discriminator_w2_apply_adjustments(discriminator_w2.array, discriminator_w2_adjustments_learning_rate_real_), 128, 1);
@@ -323,20 +302,14 @@ function GAN(epoch_callback) {
             discriminator_b1 = new Vector(discriminator_b1_apply_adjustments(discriminator_b1.array, discriminator_b1_adjustments_learning_rate_fake_));
 
             // Optimize generator
-            generator_w7 = new Matrix(generator_w1_apply_adjustments(generator_w7.array, generator_w7_adjustments_learning_rate_), 1, 256);
-            generator_b7 = new Vector(generator_b1_apply_adjustments(generator_b7.array, generator_b7_adjustments_learning_rate_));
-            generator_w6 = new Matrix(generator_w2_apply_adjustments(generator_w6.array, generator_w6_adjustments_learning_rate_), 256, 784);
-            generator_b6 = new Vector(generator_b2_apply_adjustments(generator_b6.array, generator_b6_adjustments_learning_rate_));
-            generator_w5 = new Matrix(generator_w2_apply_adjustments(generator_w5.array, generator_w5_adjustments_learning_rate_), 256, 256);
-            generator_b5 = new Vector(generator_b2_apply_adjustments(generator_b5.array, generator_b5_adjustments_learning_rate_));
-            generator_w4 = new Matrix(generator_w1_apply_adjustments(generator_w4.array, generator_w4_adjustments_learning_rate_), 1, 256);
-            generator_b4 = new Vector(generator_b1_apply_adjustments(generator_b4.array, generator_b4_adjustments_learning_rate_));
-            generator_w3 = new Matrix(generator_w2_apply_adjustments(generator_w3.array, generator_w3_adjustments_learning_rate_), 256, 784);
-            generator_b3 = new Vector(generator_b2_apply_adjustments(generator_b3.array, generator_b3_adjustments_learning_rate_));
-            generator_w2 = new Matrix(generator_w2_apply_adjustments(generator_w2.array, generator_w2_adjustments_learning_rate_), 256, 256);
-            generator_b2 = new Vector(generator_b2_apply_adjustments(generator_b2.array, generator_b2_adjustments_learning_rate_));
-            generator_w1 = new Matrix(generator_w1_apply_adjustments(generator_w1.array, generator_w1_adjustments_learning_rate_), 1, 256);
-            generator_b1 = new Vector(generator_b1_apply_adjustments(generator_b1.array, generator_b1_adjustments_learning_rate_));
+            for (let layer = 0; layer < generator_structure.length; layer++) {
+                if (layer == 0) {
+                    generator_w[layer] = new Matrix(generator_w_apply_adjustments[layer](generator_w[layer].array, generator_w_adjustments_learning_rate_[layer]), noise_dimensions, generator_structure[layer]); 
+                } else {
+                    generator_w[layer] = new Matrix(generator_w_apply_adjustments[layer](generator_w[layer].array, generator_w_adjustments_learning_rate_[layer]), generator_structure[layer - 1], generator_structure[layer]);
+                };
+                generator_b[layer] = new Vector(generator_b_apply_adjustments[layer](generator_b[layer].array, generator_b_adjustments_learning_rate_[layer]));
+            };
 
             console.log("Epoch: " + epoch + " Discriminator error real: " + new Matrix(discriminator_error_real, BATCH_SIZE, 1).mean_squared_error);
             console.log("Epoch: " + epoch + " Discriminator error fake: " + new Matrix(discriminator_error_fake, BATCH_SIZE, 1).mean_squared_error);
