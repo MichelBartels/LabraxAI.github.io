@@ -221,10 +221,10 @@ function GAN(epoch_callback) {
             for (let layer = 0; layer < generator_structure.length; layer++) {
                 if (layer == generator_structure.length - 1) {
                     generator_slope_.push(generator_slope[layer](generator_x[layer]));
-                    generator_w_transpose.push(new Matrix(discriminator_w1_transpose_, generator_structure[layer], generator_structure[layer + 1])).transpose_matrix.array;
+                    generator_w_transpose.push(new Matrix(discriminator_w1_transpose_, generator_structure[layer], generator_structure[layer + 1]).transpose_matrix.array);
                 } else {
                     generator_slope_.push(generator_slope[layer](generator_x_no_activation[layer]));
-                    generator_w_transpose.push(new Matrix(generator_w[layer + 1], generator_structure[layer], generator_structure[layer + 1])).transpose_matrix.array;;
+                    generator_w_transpose.push(new Matrix(generator_w[layer + 1], generator_structure[layer], generator_structure[layer + 1]).transpose_matrix.array);
                 };
                 if (layer == 0) {
                     generator_layer_transpose.push(new Matrix(noise, BATCH_SIZE, noise_dimensions).transpose_matrix.array);
