@@ -169,7 +169,7 @@ function GAN(epoch_callback) {
             let discriminator_error_at_hidden_layer_fake = discriminator_error_at_hidden_layer(discriminator_derivative_output_fake, discriminator_w2_transpose_.array);
             let discriminator_derivative_hidden_layer_fake = discriminator_derivative_hidden_layer(discriminator_slope_hidden_layer_fake, discriminator_error_at_hidden_layer_fake);
             let discriminator_layer_1_y_transpose_fake = new Matrix(discriminator_layer_1_y_fake, BATCH_SIZE, 128).transpose_matrix;
-            let discriminator_x_transpose_fake = new Matrix(generator_y, BATCH_SIZE, 784).transpose_matrix;
+            let discriminator_x_transpose_fake = new Matrix(generator_x[generator_x.length - 1], BATCH_SIZE, 784).transpose_matrix;
 
             let discriminator_w2_adjustments_fake = discriminator_w2_adjustments(discriminator_layer_1_y_transpose_fake.array, discriminator_derivative_output_fake);
             let discriminator_b2_adjustments_fake = discriminator_b2_adjustments(discriminator_derivative_output_fake);
