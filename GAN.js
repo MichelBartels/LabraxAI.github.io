@@ -32,7 +32,7 @@ function GAN(epoch_callback) {
                 generator_w.push(new Matrix(new_random_array(generator_structure[layer - 1] * generator_structure[layer]), generator_structure[layer - 1], generator_structure[layer]));
                 generator_matmul.push(create_multiply_function(BATCH_SIZE, generator_structure[layer - 1], generator_structure[layer]));
             };
-            generator_b.push(new Matrix(generator_structure[layer]));
+            generator_b.push(new Vector(generator_structure[layer], 0));
             generator_add.push(create_matrix_vector_add_function(BATCH_SIZE, generator_structure[layer]));
             if (layer == (generator_structure.length - 1)) {
                 generator_layer.push(create_tanh_function(BATCH_SIZE * generator_structure[layer]));
