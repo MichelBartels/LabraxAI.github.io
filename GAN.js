@@ -107,7 +107,7 @@ function GAN(epoch_callback) {
             generator_b_adjustments_learning_rate.push(create_multiply_function(generator_structure[layer], 1, "scalar", LEARNING_RATE_GENERATOR))
             generator_b_apply_adjustments.push(create_matrix_matrix_subtract_function(generator_structure[layer], 1));
         };
-
+        console.log(generator_error);
         window.epoch = 0;
         window.interval = setInterval(function() {
             // Classify real images
