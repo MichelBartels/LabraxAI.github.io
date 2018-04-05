@@ -194,7 +194,7 @@ function GAN(epoch_callback) {
             };
 
             // Classify fake images
-            discriminator_layer_1_y_no_activation_fake = discriminator_add1(discriminator_matmul1(generator_y, discriminator_w1.array), discriminator_b1.array);
+            discriminator_layer_1_y_no_activation_fake = discriminator_add1(discriminator_matmul1(generator_x[generator_x.length - 1], discriminator_w1.array), discriminator_b1.array);
             discriminator_layer_1_y_fake = discriminator_layer1(discriminator_layer_1_y_no_activation_fake);
             discriminator_y_fake = discriminator_output(discriminator_add2(discriminator_matmul2(discriminator_layer_1_y_fake, discriminator_w2.array), discriminator_b2.array));
 
