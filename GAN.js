@@ -240,10 +240,10 @@ function GAN(epoch_callback) {
                     generator_error_[layer] = generator_error[layer](generator_error_[layer + 1], generator_w_transpose[layer]);
                 };
                 generator_delta_[layer] = generator_delta[layer](generator_slope_[layer], generator_error_[layer]);
-                generator_w_adjustments_.push(generator_w_adjustments[layer](generator_layer_transpose[layer], generator_delta_[layer]));
-                generator_w_adjustments_learning_rate_.push(generator_w_adjustments_learning_rate[layer](generator_w_adjustments_[layer]));
-                generator_b_adjustments_.push(generator_b_adjustments[layer](generator_delta_[layer]));
-                generator_b_adjustments_learning_rate_.push(generator_b_adjustments_learning_rate[layer](generator_b_adjustments_[layer]));
+                generator_w_adjustments_[layer] = generator_w_adjustments[layer](generator_layer_transpose[layer], generator_delta_[layer]);
+                generator_w_adjustments_learning_rate_[layer] = generator_w_adjustments_learning_rate[layer](generator_w_adjustments_[layer]);
+                generator_b_adjustments_[layer] = generator_b_adjustments[layer](generator_delta_[layer]);
+                generator_b_adjustments_learning_rate_[layer] = generator_b_adjustments_learning_rate[layer](generator_b_adjustments_[layer]);
             };
 
             // Optimize discriminator for classifying real images
