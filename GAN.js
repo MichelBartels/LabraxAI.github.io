@@ -143,13 +143,13 @@ function GAN(epoch_callback) {
             // Generate fake images
             let generator_x_no_activation = [];
             let generator_x = [];
-            for (let layer = 0; layer < generator_structure.length; layer++) {
+            for (let layer = 0; layer < (generator_structure.length + 1); layer++) {
                 if (layer == 0) {
                     generator_x.push(new_random_array(BATCH_SIZE * noise_dimensions, -1, 1));
-                    generator_x_no_activation.push(new_random_array(BATCH_SIZE * noise_dimensions, -1, 1));
+                    generator_x_no_activation.push(generator_x_no_activation[layer]);
                 } else {
-                    generator_x_no_activation.push(generator_add[layer](generator_matmul[layer](generator_x[layer - 1], generator_w[layer].array), generator_b[layer].array));
-                    generator_x.push(generator_layer[layer](generator_x_no_activation[layer]));
+                    generator_x_no_activation.push(generator_add[layer - 1](generator_matmul[layer - 1](generator_x[layer - 1], generator_w[layer - 1].array), generator_b[layer - 1].array));
+                    generator_x.push(generator_layer[layer - 1](generator_x_no_activation[layer]));
                 };
             };
 
@@ -183,13 +183,13 @@ function GAN(epoch_callback) {
             // Generate fake images
             generator_x_no_activation = [];
             generator_x = [];
-            for (let layer = 0; layer < generator_structure.length; layer++) {
+            for (let layer = 0; layer < (generator_structure.length + 1); layer++) {
                 if (layer == 0) {
                     generator_x_no_activation.push(new_random_array(BATCH_SIZE * noise_dimensions, -1, 1));
                     generator_x.push(generator_x_no_activation[layer]);
                 } else {
-                    generator_x_no_activation.push(generator_add[layer](generator_matmul[layer](generator_x[layer - 1], generator_w[layer].array), generator_b[layer].array));
-                    generator_x.push(generator_layer[layer](generator_x_no_activation[layer]));
+                    generator_x_no_activation.push(generator_add[layer - 1](generator_matmul[layer - 1](generator_x[layer - 1], generator_w[layer - 1].array), generator_b[layer - 1].array));
+                    generator_x.push(generator_layer[layer - 1](generator_x_no_activation[layer]));
                 };
             };
 
@@ -220,16 +220,16 @@ function GAN(epoch_callback) {
             let generator_b_adjustments_learning_rate_ = [];
             for (let layer = 0; layer < generator_structure.length; layer++) {
                 if (layer == generator_structure.length - 1) {
-                    generator_slope_.push(generator_slope[layer](generator_x[layer]));
+                    generator_slope_.push(generator_slope[layer](generator_x[layer + 1]));
                     generator_w_transpose.push(new Matrix(discriminator_w1_transpose_, generator_structure[layer], generator_structure[layer + 1]).transpose_matrix.array);
                 } else {
-                    generator_slope_.push(generator_slope[layer](generator_x_no_activation[layer]));
+                    generator_slope_.push(generator_slope[layer](generator_x_no_activation[layer + 1]));
                     generator_w_transpose.push(new Matrix(generator_w[layer + 1], generator_structure[layer], generator_structure[layer + 1]).transpose_matrix.array);
                 };
                 if (layer == 0) {
                     generator_layer_transpose.push(new Matrix(noise, BATCH_SIZE, noise_dimensions).transpose_matrix.array);
                 } else {
-                    generator_layer_transpose.push(new Matrix(generator_layer_[layer + 1], BATCH_SIZE, generator_structure[layer + 1]).array);
+                    generator_layer_transpose.push(new Matrix(generator_layer_[layer - 1], BATCH_SIZE, generator_structure[layer + 1]).array);
                 };
             };
             
