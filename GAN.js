@@ -107,7 +107,7 @@ function GAN(epoch_callback) {
             generator_b_adjustments_learning_rate.push(create_multiply_function(generator_structure[layer], 1, "scalar", LEARNING_RATE_GENERATOR))
             generator_b_apply_adjustments.push(create_matrix_matrix_subtract_function(generator_structure[layer], 1));
         };
-        console.log(generator_error);
+
         window.epoch = 0;
         window.interval = setInterval(function() {
             // Classify real images
@@ -200,12 +200,12 @@ function GAN(epoch_callback) {
 
             // Compute and print out generator error of fake images
             let generator_y_targets = new Matrix(BATCH_SIZE, 1, 1);
-            let generator_error = discriminator_error(discriminator_y_fake, generator_y_targets.array);
+            let generator_loss = discriminator_error(discriminator_y_fake, generator_y_targets.array);
 
             // Backpropagate generator error of fake images
             let generator_discriminator_slope_output_layer_fake = discriminator_slope_output_layer(discriminator_y_fake);
             let generator_discriminator_slope_hidden_layer_fake = discriminator_slope_hidden_layer(discriminator_layer_1_y_no_activation_fake);
-            let generator_discriminator_derivative_output_fake = discriminator_derivative_output(generator_discriminator_slope_output_layer_fake, generator_error);
+            let generator_discriminator_derivative_output_fake = discriminator_derivative_output(generator_discriminator_slope_output_layer_fake, generator_loss);
             let generator_discriminator_error_at_hidden_layer_fake = discriminator_error_at_hidden_layer(generator_discriminator_derivative_output_fake, discriminator_w2_transpose_.array);
             let generator_discriminator_derivative_hidden_layer_fake = discriminator_derivative_hidden_layer(generator_discriminator_slope_hidden_layer_fake, generator_discriminator_error_at_hidden_layer_fake);
 
@@ -235,7 +235,6 @@ function GAN(epoch_callback) {
             
             for (let layer = generator_structure.length - 1; layer >= 0; layer++) {
                 if (layer == generator_structure.length - 1) {
-                    console.log(generator_error[layer]);
                     generator_error_[layer] = generator_error[layer](generator_discriminator_derivative_hidden_layer_fake, generator_w_transpose[layer]);
                 } else {
                     generator_error_[layer] = generator_error[layer](generator_error_[layer + 1], generator_w_transpose[layer]);
