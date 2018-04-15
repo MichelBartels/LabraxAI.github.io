@@ -7,6 +7,14 @@ function new_random_array(number_of_items, min, max) {
     };
     return array;
 };
+function new_normally_distributed_array(number_of_items, mean, standard_deviation) {
+    let array = new Float32Array(number_of_items);
+    let tau = 2 * Math.PI;
+    for (let i = 0; i < number_of_items; i++) {
+        array[i] = Math.sqrt(-2 * Math.log(Math.random())) * Math.cos(tau * Math.random()) * standard_deviation + mean;
+    };
+    return array;
+};
 if (GPU_ENABLED) {
     var gpu = new GPU();
     var create_multiply_function = function(m, mn, n) {
@@ -123,6 +131,7 @@ if (GPU_ENABLED) {
         let kernel = gpu.createKernel(function(matrix) {
             return Math.log(matrix[this.thread.x]);
         }).setOutput([m * n]);
+        return kernel
     };
     var create_division_function = function(m, n, dividend) {
         let kernel = gpu.createKernel(function(matrix) {
@@ -130,6 +139,16 @@ if (GPU_ENABLED) {
         }, {
             constants: {
                 dividend: dividend
+            }
+        }).setOutput([m * n]);
+        return kernel;
+    };
+    var create_subtract_from_scalar_function = function(m, n, scalar) {
+        let kernel = gpu.createKernel(function(matrix) {
+            return this.constants.scalar - matrix[this.thread.x];
+        }, {
+            constants: {
+                scalar: scalar
             }
         }).setOutput([m * n]);
         return kernel;
