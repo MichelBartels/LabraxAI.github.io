@@ -153,6 +153,43 @@ if (GPU_ENABLED) {
         }).setOutput([m * n]);
         return kernel;
     };
+    var create_first_moment_update_function = function(m, n, beta_1) {
+        let kernel = gpu.createKernel(function(m_old, gradient) {
+            return this.constants.beta_1 * m_old[this.thread.x] + (1 - beta_1) * gradient[this.thread.x];
+        }, {
+            constants: {
+                beta_1: beta_1
+            }
+        }).setOutput([m * n]);
+        return kernel;
+    };
+    var create_second_moment_update_function = function(m, n, beta_2) {
+        let kernel = gpu.createKernel(function(v_old, gradient) {
+            return this.constants.beta_2 * v_old[this.thread.x] + (1 - beta_2) * Math.pow(gradient[this.thread.x], 2);
+        }, {
+            constants: {
+                beta_2: beta_2
+            }
+        }).setOutput([m * n]);
+        return kernel;
+    };
+    var create_bias_correction_function = function(m, n) {
+        let kernel = gpu.createKernel(function(m_old, beta) {
+            return m_old[this.thread.x] / (1 - beta)
+        }).setOutput([m * n]);
+        return kernel;
+    };
+    var create_theta_update_function = function(m, n, alpha, epsilon) {
+        let kernel = gpu.createKernel(function(old_theta, m, v) {
+            return /*old_theta[this.thread.x] - */this.constants.alpha * m[this.thread.x] / (Math.sqrt(v[this.thread.x]) + this.constants.epsilon);
+        }, {
+            constants: {
+                alpha: alpha,
+                epsilon: epsilon
+            }
+        }).setOutput([m * n]);
+        return kernel;
+    }
 };
 class Matrix {
     constructor() {
