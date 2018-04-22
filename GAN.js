@@ -1,10 +1,10 @@
 function GAN(epoch_callback, label) {
     const BATCH_SIZE = 64;
     const NUMBER_OF_EPOCHS = 10000;
-    var STEP_SIZE = 0.001;
+    var STEP_SIZE = 0.00001;
     const BETA_1 = 0.9;
     const BETA_2 = 0.999;
-    const EPSILON = 1e-4;
+    const EPSILON = 1e-6;
     const noise_dimensions = 100;
     const image_size = 784;
     const generator_neurons_layer_1 = 112;
@@ -115,8 +115,8 @@ function GAN(epoch_callback, label) {
             };
             discriminator_b_gradient.push(create_sum_function(BATCH_SIZE, discriminator_structure[layer]));
         };
-        let discriminator_error_fake = create_subtract_scalar_function(BATCH_SIZE, discriminator_structure[discriminator_structure.length - 1], 1);
-        let discriminator_generator_error = create_division_function(BATCH_SIZE, discriminator_structure[discriminator_structure.length - 1], 1);
+        let discriminator_error_fake = create_subtract_from_scalar_function(BATCH_SIZE, discriminator_structure[discriminator_structure.length - 1], 1);
+        let discriminator_generator_error = create_division_function(BATCH_SIZE, discriminator_structure[discriminator_structure.length - 1], -1);
         let add_epsilon = create_add_scalar_function(BATCH_SIZE, discriminator_structure[discriminator_structure.length - 1], EPSILON);
 
         let generator_slope = [];
@@ -308,8 +308,9 @@ function GAN(epoch_callback, label) {
             
             for (let layer = discriminator_structure.length - 1; layer >= 0; layer--) {
                 if (layer == discriminator_structure.length - 1) {
-                    let discriminator_error_1 = add_epsilon(discriminator_x[discriminator_x.length - 1]);
-                    discriminator_error_[layer] = discriminator_generator_error(discriminator_error_1);
+                    let discriminator_error_1 = discriminator_error_fake(discriminator_x[discriminator_x.length - 1]);
+                    let discriminator_error_2 = add_epsilon(discriminator_error_1);
+                    discriminator_error_[layer] = discriminator_generator_error(discriminator_error_2);
                 } else {
                     discriminator_error_[layer] = discriminator_error[layer](discriminator_delta_[layer + 1], discriminator_w_transpose[layer]);
                 };
@@ -362,16 +363,17 @@ function GAN(epoch_callback, label) {
                 generator_b[layer] = new Vector(generator_subtract_gradients_b[layer](generator_b[layer].array, generator_multiply_learning_rate_b[layer](generator_b_gradient_[layer])));
             };
 
-            // Optimize discriminator
-            for (let layer = 0; layer < discriminator_structure.length; layer++) {
-                if (layer == 0) {
-                    discriminator_w[layer] = new Matrix(discriminator_subtract_gradients_w[layer](discriminator_w[layer].array, discriminator_multiply_learning_rate_w[layer](discriminator_w_gradient_[layer])), image_size, discriminator_structure[layer]);
-                } else {
-                    discriminator_w[layer] = new Matrix(discriminator_subtract_gradients_w[layer](discriminator_w[layer].array, discriminator_multiply_learning_rate_w[layer](discriminator_w_gradient_[layer])), discriminator_structure[layer - 1], discriminator_structure[layer]);
+            if (new Matrix(generator_loss, generator_structure[generator_structure.length - 1], BATCH_SIZE).mean < 5000) {
+                // Optimize discriminator
+                for (let layer = 0; layer < discriminator_structure.length; layer++) {
+                    if (layer == 0) {
+                        discriminator_w[layer] = new Matrix(discriminator_subtract_gradients_w[layer](discriminator_w[layer].array, discriminator_multiply_learning_rate_w[layer](discriminator_w_gradient_[layer])), image_size, discriminator_structure[layer]);
+                    } else {
+                        discriminator_w[layer] = new Matrix(discriminator_subtract_gradients_w[layer](discriminator_w[layer].array, discriminator_multiply_learning_rate_w[layer](discriminator_w_gradient_[layer])), discriminator_structure[layer - 1], discriminator_structure[layer]);
+                    };
+                    discriminator_b[layer] = new Vector(discriminator_subtract_gradients_b[layer](discriminator_b[layer].array, discriminator_multiply_learning_rate_b[layer](discriminator_b_gradient_[layer])));
                 };
-                discriminator_b[layer] = new Vector(discriminator_subtract_gradients_b[layer](discriminator_b[layer].array, discriminator_multiply_learning_rate_b[layer](discriminator_b_gradient_[layer])));
             };
-
 
             console.log("Epoch: " + epoch + " Discriminator error real: " + new Matrix(discriminator_real_loss, discriminator_structure[discriminator_structure.length - 1], BATCH_SIZE).mean);
             console.log("Epoch: " + epoch + " Discriminator error fake: " + new Matrix(discriminator_fake_loss, discriminator_structure[discriminator_structure.length - 1], BATCH_SIZE).mean);
@@ -382,7 +384,7 @@ function GAN(epoch_callback, label) {
                 STEP_SIZE *= 1 / (1 + decay * (((window.epoch + 1) - ((window.epoch + 1) % 100)) / 100));
             };
 
-            epoch_callback(batch/*generator_x[generator_x.length - 1]*/, new Matrix(discriminator_real_loss, BATCH_SIZE, 1).mean_squared_error, new Matrix(discriminator_fake_loss, BATCH_SIZE, 1).mean_squared_error, new Matrix(generator_loss, BATCH_SIZE, 1)[0, 0])
+            epoch_callback(generator_x[generator_x.length - 1], new Matrix(discriminator_real_loss, BATCH_SIZE, 1).mean_squared_error, new Matrix(discriminator_fake_loss, BATCH_SIZE, 1).mean_squared_error, new Matrix(generator_loss, BATCH_SIZE, 1)[0, 0])
             window.epoch++;
         }, 10);
     });
