@@ -153,6 +153,26 @@ if (GPU_ENABLED) {
         }).setOutput([m * n]);
         return kernel;
     };
+    var create_subtract_scalar_function = function(m, n, scalar) {
+        let kernel = gpu.createKernel(function(matrix) {
+            return matrix[this.thread.x] - this.constants.scalar;
+        }, {
+            constants: {
+                scalar: scalar
+            }
+        }).setOutput([m * n]);
+        return kernel;
+    };
+    var create_add_scalar_function = function(m, n, scalar) {
+        let kernel = gpu.createKernel(function(matrix) {
+            return matrix[this.thread.x] + this.constants.scalar;
+        }, {
+            constants: {
+                scalar: scalar
+            }
+        }).setOutput([m * n]);
+        return kernel;
+    };
     var create_first_moment_update_function = function(m, n, beta_1) {
         let kernel = gpu.createKernel(function(m_old, gradient) {
             return this.constants.beta_1 * m_old[this.thread.x] + (1 - beta_1) * gradient[this.thread.x];
@@ -189,7 +209,7 @@ if (GPU_ENABLED) {
             }
         }).setOutput([m * n]);
         return kernel;
-    }
+    };
 };
 class Matrix {
     constructor() {
@@ -341,10 +361,17 @@ class Matrix {
             n: this.n
         };
     };
-    get mean_squared_error() {
+    get mean_squared() {
         let total = 0;
         for (let i = 0; i < this.array.length; i++) {
             total += Math.pow(this.array[i], 2);
+        }
+        return total / this.array.length;
+    };
+    get mean() {
+        let total = 0;
+        for (let i = 0; i < this.array.length; i++) {
+            total += this.array[i];
         }
         return total / this.array.length;
     };

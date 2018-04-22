@@ -36,12 +36,27 @@ var create_relu_function = function(input) {
             if (number[this.thread.x] > 0) {
                 return 1;
             } else {
-                return 0.001;
+                return 0;
             };
         }).setOutput([input]);
     } else {
         return gpu.createKernel(function(number) {
             return Math.max(number[this.thread.x], 0);
+        }).setOutput([input]);
+    };
+};
+var create_leaky_relu_function = function(input) {
+    if (arguments[1]) {
+        return gpu.createKernel(function(number){
+            if (number[this.thread.x] > 0) {
+                return 1;
+            } else {
+                return 0.01;
+            };
+        }).setOutput([input]);
+    } else {
+        return gpu.createKernel(function(number) {
+            return Math.max(number[this.thread.x], 0.01 * number[this.thread.x]);
         }).setOutput([input]);
     };
 };

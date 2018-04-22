@@ -1,7 +1,7 @@
-async function loadMNISTFile(filename) {
+async function loadMNISTFile(filename, bytes_to_slice) {
     let file = await fetch(filename);
     let array_buffer = await file.arrayBuffer();
-    return new Uint8Array(array_buffer).slice(16);
+    return new Uint8Array(array_buffer).slice(bytes_to_slice);
 };
 function showPicture(picture_array, canvas) {
     canvas.width = 28;
@@ -18,22 +18,35 @@ function showPicture(picture_array, canvas) {
         image_data[i * 4 + 3] = 255;
     };
     return ctx.putImageData(image, 0, 0);
-}
+};
 class MNIST {
-    constructor(callback) {
+    constructor(label, callback) {
         this.loaded = false;
-        let this_ = this;
         this.index = 0;
-        loadMNISTFile("digits.idx3-ubyte").then(function(array) {
-            let new_array = new Float32Array(array.length);
-            for (let i = 0; i < array.length; i++) {
-                new_array[i] = array[i] / 127.5 - 1;
-            };
-            this_.array = new_array;
-            this_.loaded = true;
-            if (callback) {
-                callback(this_);
-            };
+        this.label = label;
+        let this_ = this;
+        loadMNISTFile("MNIST/images.idx3-ubyte", 16).then(function(array_images) {
+            loadMNISTFile("MNIST/labels.idx1-ubyte", 8).then(function(array_labels) {
+                let number_of_images_with_right_label = 0;
+                for (let i = 0; i < array_labels.length; i++) {
+                    if (array_labels[i] == label) {
+                        number_of_images_with_right_label++;
+                    };
+                };
+                let new_array = new Float32Array(number_of_images_with_right_label * 784);
+                let index = 0;
+                for (let i = 0; i < array_images.length; i++) {
+                    if (array_labels[(i - (i % 784)) / 784] == label) {
+                        new_array[index] = array_images[i] / 127.5 - 1;
+                        index++;
+                    };
+                };
+                this_.array = new_array;
+                this_.loaded = true;
+                if (callback) {
+                    callback(this_);
+                };
+            });
         });
     };
     next_batch(number_of_images) {
