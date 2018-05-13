@@ -3,15 +3,23 @@ async function loadMNISTFile(filename, bytes_to_slice) {
     let array_buffer = await file.arrayBuffer();
     return new Uint8Array(array_buffer).slice(bytes_to_slice);
 };
-function showPicture(picture_array, canvas) {
-    canvas.width = 28;
-    canvas.height = 28;
+async function showPicture(picture_array, canvas, number_of_images) {
+    let number_of_images_per_row = Math.sqrt(number_of_images)
+    canvas.width = 28 * number_of_images_per_row;
+    canvas.height = 28 * number_of_images_per_row;
     let ctx = canvas.getContext("2d");
     ctx.imageSmoothingEnabled = false;
-    let image = ctx.createImageData(28, 28);
+    let image = ctx.createImageData(canvas.width, canvas.height);
     let image_data = image.data;
     for (let i = 0; i < image_data.length / 4; i++) {
-        let real_value = (picture_array[i] + 1) * 127.5;
+        let pos_x = i % canvas.width;
+        let pos_y = (i - pos_x) / canvas.height;
+        let pixel_index_x = pos_x % 28;
+        let pixel_index_y = pos_y % 28;
+        let pixel_index = pixel_index_x + pixel_index_y * 28;
+        let picture_index = (pos_x - pixel_index_x) / 28 + (pos_y - pixel_index_y) / 28 * number_of_images_per_row;
+        let index = picture_index * 784 + pixel_index;
+        let real_value = (picture_array[index] + 1) * 127.5;
         image_data[i * 4] = real_value;
         image_data[i * 4 + 1] = real_value;
         image_data[i * 4 + 2] = real_value;

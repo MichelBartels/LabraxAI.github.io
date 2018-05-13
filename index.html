@@ -12,5 +12,30 @@
     </head>
     <body>
         <canvas id="preview"></canvas>
+        <div id="information">
+            <p>Epoch: <span id="epoch"></span></p>
+            <p>Discriminator loss real: <span id="discriminator_loss_real"></span></p>
+            <p>Discriminator loss fake: <span id="discriminator_loss_fake"></span></p>
+            <p>Generator loss: <span id="generator_loss"></span></p>
+            <p>Learning rate: <span id="learning_rate"></span></p>
+        </div>
+        <div id="settings_overlay">
+            <div id="setting">
+                <p>Select a number to generate</p>
+                <select>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                </select>
+                <button>Ok</button>
+            </div>
+        </div>
     </body>
 </html>

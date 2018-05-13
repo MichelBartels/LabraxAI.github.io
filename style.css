@@ -6,5 +6,77 @@ canvas {
     image-rendering: pixelated;
     image-rendering: optimize-contrast;
     -ms-interpolation-mode: nearest-neighbor;
-    height: 90vh;
+    height: 98vh;
+    width: 98vh;
+    box-shadow: 0 0 5px black;
+    margin: 0.5vh;
+    background-color: white;
+}
+body {
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
+    margin-top: 0.5vh;
+    margin-bottom: 0.5vh;
+    box-shadow: 0 0 5px black;
+    background-color: rgb(228, 228, 228);
+    display: grid;
+    grid-template-columns: 99vh 1fr;
+    grid-template-rows: max-content;
+    min-height: 99vh;
+
+}
+html {
+    background-color: rgb(140, 140, 140);
+}
+#information {
+    float: right;
+    margin: 20px;
+}
+@media (max-width: 130vh) {
+    body {
+        grid-template-columns: 100%;
+        grid-template-rows: max-content max-content;
+    }
+    canvas { 
+        height: initial;
+        width: 98vw;
+    }
+}
+#settings_overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.7);
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    transition: opacity 200ms, z-index 1ms 200ms;
+}
+#setting {
+    box-shadow: 0 0 10px black;
+    padding: 30px;
+    background-color: white;
+}
+button {
+    float: right;
+}
+button, select {
+    border: none;
+    background: white;
+    outline-color: rgb(158, 158, 158);
+    outline-style: solid;
+    outline-width: 1px;
+    padding: 5px;
+    box-shadow: 0 0 0 black;
+    transition: box-shadow 200ms;
+}
+button:hover, select:hover {
+    box-shadow: 0 0 5px black;
+}
+button:active, select:active {
+    box-shadow: 0 0 20px black;
 }

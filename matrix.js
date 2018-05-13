@@ -365,14 +365,14 @@ class Matrix {
         let total = 0;
         for (let i = 0; i < this.array.length; i++) {
             total += Math.pow(this.array[i], 2);
-        }
+        };
         return total / this.array.length;
     };
     get mean() {
         let total = 0;
         for (let i = 0; i < this.array.length; i++) {
             total += this.array[i];
-        }
+        };
         return total / this.array.length;
     };
     sum() {
