@@ -1,4 +1,4 @@
-function GAN(epoch_callback, label) {
+function GAN(label, epoch_callback, mnist_loaded_callback) {
     const BATCH_SIZE = 64;
     const NUMBER_OF_EPOCHS = 10000;
     var STEP_SIZE = 0.00001;
@@ -22,6 +22,9 @@ function GAN(epoch_callback, label) {
 
     new MNIST(label, function (MNIST_DATASET) {
         console.log("MNIST dataset loaded");
+        if (mnist_loaded_callback) {
+            mnist_loaded_callback()
+        };
         window.generator_w = [];
         let generator_matmul = [];
         let generator_layer = [];
@@ -363,12 +366,15 @@ function GAN(epoch_callback, label) {
             // console.log("Epoch: " + epoch + " Generator error: " + new Matrix(generator_loss, generator_structure[generator_structure.length - 1], BATCH_SIZE).mean);
             // console.log("Epoch: " + epoch + " Learning rate: " + STEP_SIZE);
 
-            if ((window.epoch + 1) % 100 == 0) {
-                STEP_SIZE *= 1 / (1 + decay * (((window.epoch + 1) - ((window.epoch + 1) % 100)) / 100));
+             if ((window.epoch + 1) % 100 == 0) {
+                STEP_SIZE *= 0.9;
+                //STEP_SIZE *= 1 / (1 + decay * (((window.epoch + 1) - ((window.epoch + 1) % 100)) / 100));
             };
 
+            if (epoch_callback) {
+                epoch_callback(generator_x[generator_x.length - 1], new Matrix(discriminator_real_loss_, BATCH_SIZE, 1).mean, new Matrix(discriminator_fake_loss_, BATCH_SIZE, 1).mean, new Matrix(generator_loss_, BATCH_SIZE, 1).mean, STEP_SIZE)
+            };
 
-            epoch_callback(generator_x[generator_x.length - 1], new Matrix(discriminator_real_loss_, BATCH_SIZE, 1).mean, new Matrix(discriminator_fake_loss_, BATCH_SIZE, 1).mean, new Matrix(generator_loss_, BATCH_SIZE, 1).mean, STEP_SIZE)
             if (window.epoch < 10000) {
                 window.epoch++;
             } else {

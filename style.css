@@ -54,12 +54,14 @@ html {
     justify-content: center;
     align-items: center;
     z-index: 10;
-    transition: opacity 200ms, z-index 1ms 200ms;
+    transition: opacity 200ms, display 1ms 200ms;
 }
-#setting {
+#settings {
     box-shadow: 0 0 10px black;
     padding: 30px;
     background-color: white;
+    opacity: 1;
+    transition: opacity 200ms, display 1ms 200ms;
 }
 button {
     float: right;
@@ -79,4 +81,17 @@ button:hover, select:hover {
 }
 button:active, select:active {
     box-shadow: 0 0 20px black;
+}
+#loading {
+    display: none;
+    opacity: 0;
+    transition: opacity 200ms;
+    box-shadow: 0 0 30px black;
+    padding: 100px;
+    background-color: white;
+}
+progress[value]::-webkit-progress-bar {
+    background-color: #eee;
+    border-radius: 2px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
 }
