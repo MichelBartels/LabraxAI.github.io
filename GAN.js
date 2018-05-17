@@ -1,4 +1,4 @@
-function GAN(label, epoch_callback, mnist_loaded_callback) {
+function GAN(label, epoch_callback, mnist_loaded_callback, finished, max_epochs) {
     const BATCH_SIZE = 64;
     const NUMBER_OF_EPOCHS = 10000;
     var STEP_SIZE = 0.00001;
@@ -375,10 +375,24 @@ function GAN(label, epoch_callback, mnist_loaded_callback) {
                 epoch_callback(generator_x[generator_x.length - 1], new Matrix(discriminator_real_loss_, BATCH_SIZE, 1).mean, new Matrix(discriminator_fake_loss_, BATCH_SIZE, 1).mean, new Matrix(generator_loss_, BATCH_SIZE, 1).mean, STEP_SIZE)
             };
 
-            if (window.epoch < 10000) {
+            if (max_epochs && window.epoch < max_epochs) {
                 window.epoch++;
             } else {
                 stop_training();
+                finished(function() {
+                    let generator_x_no_activation = [];
+                    let generator_x = [];
+                    for (let layer = 0; layer < (generator_structure.length + 1); layer++) {
+                        if (layer == 0) {
+                            generator_x.push(new_random_array(BATCH_SIZE * noise_dimensions, -1, 1));
+                            generator_x_no_activation.push(generator_x[layer]);
+                        } else {
+                            generator_x_no_activation.push(generator_matmul[layer - 1](generator_x[layer - 1], generator_w[layer - 1].array));
+                            generator_x.push(generator_layer[layer - 1](generator_x_no_activation[layer]));
+                        };
+                    };
+                    return generator_x[generator_x.length - 1];
+                });
             };
         }, 10);
     });

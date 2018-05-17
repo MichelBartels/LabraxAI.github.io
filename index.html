@@ -18,6 +18,8 @@
             <p>Discriminator loss fake: <span id="discriminator_loss_fake"></span></p>
             <p>Generator loss: <span id="generator_loss"></span></p>
             <p>Learning rate: <span id="learning_rate"></span></p>
+            <p id="training_in_progress">Training in progress</p>
+            <p id="progress_bar"><progress value="0" max="1000" id="train_progress"></progress><button>&#x23f8;</button></p>
         </div>
         <div id="settings_overlay">
             <div id="settings">
@@ -34,7 +36,7 @@
                     <option value="8">8</option>
                     <option value="9">9</option>
                 </select>
-                <button>Ok</button>
+                <button id="ok">Ok</button>
             </div>
             <div id="loading">
                 <p>Loading MNIST dataset</p>

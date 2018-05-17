@@ -90,8 +90,47 @@ button:active, select:active {
     padding: 100px;
     background-color: white;
 }
-progress[value]::-webkit-progress-bar {
-    background-color: #eee;
-    border-radius: 2px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+#train_progress {
+    -webkit-appearance: none;
+    -ms-progress-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 90%;
+    height: 100%;
+}
+#train_progress::-webkit-progress-value {
+    background-color: white;
+    box-shadow: 0 0 5px black inset;
+    border-radius: 4px;
+}
+#train_progress::-moz-progress-value {
+    background-color: white;
+    box-shadow: 0 0 5px black inset;
+    border-radius: 4px;
+}
+#train_progress::progress-value {
+    background-color: white;
+    box-shadow: 0 0 5px black inset;
+    border-radius: 4px;
+}
+#train_progress::-webkit-progress-bar {
+    background-color: white;
+    box-shadow: 0 0 5px black;
+    border-radius: 4px;
+}
+#train_progress::-moz-progress-bar {
+    background-color: white;
+    box-shadow: 0 0 5px black;
+    border-radius: 4px;
+}
+#train_progress::progress-bar {
+    background-color: white;
+    box-shadow: 0 0 5px black;
+    border-radius: 4px;
+}
+#progress_bar {
+    width: 100%;
+    height: fit-content;
+    overflow: hidden;
+    display: flex;
 }
