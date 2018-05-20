@@ -130,7 +130,7 @@ function GAN(label, epoch_callback, mnist_loaded_callback, finished, max_epochs)
         let loss = create_log_function(BATCH_SIZE, 1);
 
         window.epoch = 0;
-        window.interval = setInterval(function() {
+        window.train = function() {
             // Generate fake images
             let generator_x_no_activation = [];
             let generator_x = [];
@@ -372,7 +372,7 @@ function GAN(label, epoch_callback, mnist_loaded_callback, finished, max_epochs)
             };
 
             if (epoch_callback) {
-                epoch_callback(generator_x[generator_x.length - 1], new Matrix(discriminator_real_loss_, BATCH_SIZE, 1).mean, new Matrix(discriminator_fake_loss_, BATCH_SIZE, 1).mean, new Matrix(generator_loss_, BATCH_SIZE, 1).mean, STEP_SIZE)
+                epoch_callback(generator_x[generator_x.length - 1], new Matrix(discriminator_real_loss_, BATCH_SIZE, 1).mean, new Matrix(discriminator_fake_loss_, BATCH_SIZE, 1).mean, new Matrix(generator_loss_, BATCH_SIZE, 1).mean, STEP_SIZE, batch)
             };
 
             if (max_epochs && window.epoch < max_epochs) {
@@ -394,7 +394,11 @@ function GAN(label, epoch_callback, mnist_loaded_callback, finished, max_epochs)
                     return generator_x[generator_x.length - 1];
                 });
             };
-        }, 10);
+        };
+        window.interval = setInterval(window.train, 1);
+        window.continue_training = function() {
+            window.interval = setInterval(window.train, 1);
+        };
     });
 };
 function stop_training() {

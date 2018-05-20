@@ -63,10 +63,10 @@ html {
     opacity: 1;
     transition: opacity 200ms, display 1ms 200ms;
 }
-button {
+button:not(#samples):not(#training_images) {
     float: right;
 }
-button, select {
+button:not(#samples):not(#training_images), select {
     border: none;
     background: white;
     outline-color: rgb(158, 158, 158);
@@ -76,10 +76,10 @@ button, select {
     box-shadow: 0 0 0 black;
     transition: box-shadow 200ms;
 }
-button:hover, select:hover {
+button:not(#samples):not(#training_images):hover, select:hover {
     box-shadow: 0 0 5px black;
 }
-button:active, select:active {
+button:not(#samples):not(#training_images):active, select:active {
     box-shadow: 0 0 20px black;
 }
 #loading {
@@ -96,7 +96,8 @@ button:active, select:active {
     -moz-appearance: none;
     appearance: none;
     width: 90%;
-    height: 100%;
+    height: 30px;
+    margin: 10px;
 }
 #train_progress::-webkit-progress-value {
     background-color: white;
@@ -133,4 +134,32 @@ button:active, select:active {
     height: fit-content;
     overflow: hidden;
     display: flex;
+}
+#pause, #restart {
+    height: 30px;
+    margin: 10px;
+    cursor: pointer;
+}
+#switch_canvas {
+    border-style: solid;
+    border-width: 1px;
+    width: fit-content;
+}
+#switch_canvas button {
+    border: none;
+    padding: 10px;
+    margin: 0;
+    transition: z-index 200ms, box-shadow 200ms, background-color 200ms;
+    position: relative;
+    outline: none;
+}
+.selected {
+    background-color: #228a22;
+    box-shadow: 0 0 30px black;
+    z-index: 1;
+}
+.not_selected {
+    background-color: #881212;
+    cursor: pointer;
+    z-index: 0;
 }

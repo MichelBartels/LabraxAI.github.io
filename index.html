@@ -19,7 +19,14 @@
             <p>Generator loss: <span id="generator_loss"></span></p>
             <p>Learning rate: <span id="learning_rate"></span></p>
             <p id="training_in_progress">Training in progress</p>
-            <p id="progress_bar"><progress value="0" max="1000" id="train_progress"></progress><button>&#x23f8;</button></p>
+            <p id="progress_bar">
+                <progress value="0" max="1000" id="train_progress"></progress>
+                <button id="pause">&#x23f8;</button>
+                <button id="restart">&#x21BB;</button>
+            </p>
+            <div id="switch_canvas">
+                <button id="samples" class="selected">Samples</button><button id="training_images" class="not_selected">Training images</button>
+            </div>
         </div>
         <div id="settings_overlay">
             <div id="settings">
