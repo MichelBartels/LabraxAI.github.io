@@ -163,3 +163,9 @@ button:not(#samples):not(#training_images):active, select:active {
     cursor: pointer;
     z-index: 0;
 }
+a {
+    color: black;
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+}
