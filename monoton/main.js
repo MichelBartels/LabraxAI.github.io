@@ -20,10 +20,14 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("y_").innerHTML = "$$\\mathrm{f}^{\\prime}(x)=" + y_.toTex() + "$$";
         MathJax.Hub.Queue(["Typeset", MathJax.Hub, "y_"]);
         const d = algebra.parse(y_.toString());
-        const solution = new algebra.Equation(algebra.parse("0"), d).solveFor("x");
+        let solution = new algebra.Equation(algebra.parse("0"), d).solveFor("x");
+        if (!Array.isArray(solution)) {
+            solution = [solution];
+        }
         if (solution.length == 0) {
             return false;
         }
+        console.log(solution);
         solution.sort();
         let gradients = [];
         let xs = [];
