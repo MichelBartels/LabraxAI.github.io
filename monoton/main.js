@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const extrema = document.querySelector("#extremum");
     const calculations = document.querySelector("#calculation");
     form.onsubmit = event => {
+        form.style["display"] = "none";
         event.preventDefault();
         const y = math.parse(input.value);
         const f = algebra.parse(y.toString());
