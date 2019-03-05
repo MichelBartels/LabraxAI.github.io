@@ -5,7 +5,7 @@ function toTex(num) {
     if (num instanceof algebra.Fraction) {
         return num.toTex();
     }
-    return num.toString;
+    return num.toString();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
