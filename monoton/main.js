@@ -1,6 +1,12 @@
 function intToFract(int) {
     return new algebra.Fraction(int, 1);
 }
+function toTex(num) {
+    if (num instanceof algebra.Fraction) {
+        return num.toTex();
+    }
+    return num.toString;
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementsByTagName("form")[0];
@@ -15,10 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         const y = math.parse(input.value);
         const f = algebra.parse(y.toString());
-        document.getElementById("y").innerHTML = "$$\\mathrm{f}(x)=" + y.toTex() + "$$";
+        document.getElementById("y").innerHTML = "$$\\mathrm{f}(x)=" + toTex(y) + "$$";
         MathJax.Hub.Queue(["Typeset", MathJax.Hub, "y"]);
         const y_ = math.derivative(y, "x");
-        document.getElementById("y_").innerHTML = "$$\\mathrm{f}^{\\prime}(x)=" + y_.toTex() + "$$";
+        document.getElementById("y_").innerHTML = "$$\\mathrm{f}^{\\prime}(x)=" + toTex(y_) + "$$";
         MathJax.Hub.Queue(["Typeset", MathJax.Hub, "y_"]);
         const d = algebra.parse(y_.toString());
         let solution = new algebra.Equation(algebra.parse("0"), d).solveFor("x");
@@ -36,24 +42,24 @@ document.addEventListener("DOMContentLoaded", () => {
             const head = document.createElement("th");
             let x;
             if (i == 0) {
-                head.innerHTML = "$$x < " + solution[i].toTex() + "$$";
+                head.innerHTML = "$$x < " + toTex(solution[i]) + "$$";
                 if (solution[i] > 0) {
                     x = intToFract(0);
                 } else {
                     x = intToFract(Math.round(solution[i]) - 1);
                 }
             } else if (i % 2 == 1) {
-                head.innerHTML = "$$x=" + solution[(i - 1) / 2].toTex() + "$$";
+                head.innerHTML = "$$x=" + toTex(solution[(i - 1) / 2]) + "$$";
                 x = solution[(i - 1) / 2];
             } else if (i == solution.length * 2) {
-                head.innerHTML = "$$" + solution[i / 2 - 1].toTex() + " < x$$";
+                head.innerHTML = "$$" + toTex(solution[i / 2 - 1]) + " < x$$";
                 if (solution[i / 2 - 1] < 0) {
                     x = intToFract(0);
                 } else {
                     x = intToFract(Math.round(solution[i / 2 - 1]) + 1);
                 }
             } else {
-                head.innerHTML = "$$" + solution[i / 2 - 1].toTex() + " < x < " + solution[i / 2].toTex() + "$$";
+                head.innerHTML = "$$" + toTex(solution[i / 2 - 1]) + " < x < " + toTex(solution[i / 2]) + "$$";
                 if (solution[i / 2 - 1] < 0 && solution[i / 2] > 0) {
                     x = intToFract(0);
                 } else if ((Math.floor(solution[i / 2 - 1]) + 1) < solution[i] && (solution[i / 2 - 1] % 1) != 0) {
@@ -69,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "tableHead" + i]);
             const content = document.createElement("td");
             const y__ = d.eval({"x": x});
-            content.innerHTML = "$$\\mathrm{f}^{\\prime}(" + x.toTex() + ")=" + y__.toTex() + "$$";
+            content.innerHTML = "$$\\mathrm{f}^{\\prime}(" + toTex(x) + ")=" + toTex(y__) + "$$";
             content.setAttribute("id", "tableContent" + i);
             contents.appendChild(content);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "tableContent" + i]);
@@ -96,14 +102,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const calculation = document.createElement("span");
                 console.log(xs[i]);
                 let y_ = f.eval({"x": xs[i]});
-                calculation.innerHTML = "$$\\mathrm{f}(" + xs[i].toTex() + ")=" + y_.toTex() + "$$";
+                calculation.innerHTML = "$$\\mathrm{f}(" + toTex(xs[i]) + ")=" + toTex(y_) + "$$";
                 calculation.setAttribute("id", "calculation" + i);
                 if (gradients[i - 1] < 0 && gradients[i + 1] > 0) {
-                    extremum.innerHTML = "$$Tiefpunkt(" + xs[i].toTex() + "|" + y_.toTex() + ")$$";
+                    extremum.innerHTML = "$$Tiefpunkt(" + toTex(xs[i]) + "|" + toTex(y_) + ")$$";
                 } else if (gradients[i - 1] > 0 && gradients[i + 1] < 0) {
-                    extremum.innerHTML = "$$Hochpunkt(" + xs[i].toTex() + "|" + y_.toTex() + ")$$"
+                    extremum.innerHTML = "$$Hochpunkt(" + toTex(xs[i]) + "|" + toTex(y_) + ")$$"
                 } else {
-                    extremum.innerHTML = "$$Sattelpunkt(" + xs[i].toTex() + "|" + y_.toTex() + ")$$"
+                    extremum.innerHTML = "$$Sattelpunkt(" + toTex(xs[i]) + "|" + toTex(y_) + ")$$"
                 }
                 calculations.appendChild(calculation);
                 extrema.appendChild(extremum);
