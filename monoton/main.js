@@ -1,11 +1,5 @@
 function intToFract(int) {
-    return new algebra.Fraction(int, 1);
-}
-function toTex(num) {
-    if (num instanceof algebra.Fraction) {
-        return num.toTex();
-    }
-    return num.toString();
+    return nerdamer(int + "/" + 1);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -19,22 +13,24 @@ document.addEventListener("DOMContentLoaded", () => {
     form.onsubmit = event => {
         form.style["display"] = "none";
         event.preventDefault();
-        const y = math.parse(input.value);
-        const f = algebra.parse(y.toString());
-        document.getElementById("y").innerHTML = "$$\\mathrm{f}(x)=" + toTex(y) + "$$";
+        const y = nerdamer(input.value);
+        document.getElementById("y").innerHTML = "$$\\mathrm{f}(x)=" + y.toTeX() + "$$";
         MathJax.Hub.Queue(["Typeset", MathJax.Hub, "y"]);
-        const y_ = math.derivative(y, "x");
-        document.getElementById("y_").innerHTML = "$$\\mathrm{f}^{\\prime}(x)=" + toTex(y_) + "$$";
+        const y_ = nerdamer.diff(y, "x");
+        document.getElementById("y_").innerHTML = "$$\\mathrm{f}^{\\prime}(x)=" + y_.toTeX() + "$$";
         MathJax.Hub.Queue(["Typeset", MathJax.Hub, "y_"]);
-        const d = algebra.parse(y_.toString());
-        let solution = new algebra.Equation(algebra.parse("0"), d).solveFor("x");
-        if (!Array.isArray(solution)) {
-            solution = [solution];
+        let solution_i = nerdamer.solve(y_, "x");
+        solution_i = solution_i.symbol.elements;
+        var solution = [];
+        for (let s of solution_i) {
+            if (!s.value.includes("i")) {
+                solution.push(s);
+            }
         }
-        if (solution.length == 0) {
-            return false;
-        }
+        a = solution;
         console.log(solution);
+        //console.log(nerdamer.);
+        
         solution.sort();
         let gradients = [];
         let xs = [];
@@ -42,24 +38,25 @@ document.addEventListener("DOMContentLoaded", () => {
             const head = document.createElement("th");
             let x;
             if (i == 0) {
-                head.innerHTML = "$$x < " + toTex(solution[i]) + "$$";
+                console.log(solution[i]);
+                head.innerHTML = "$$x < " + nerdamer(solution[i]).toTeX() + "$$";
                 if (solution[i] > 0) {
                     x = intToFract(0);
                 } else {
                     x = intToFract(Math.round(solution[i]) - 1);
                 }
             } else if (i % 2 == 1) {
-                head.innerHTML = "$$x=" + toTex(solution[(i - 1) / 2]) + "$$";
+                head.innerHTML = "$$x=" + nerdamer(solution[(i - 1) / 2]).toTeX() + "$$";
                 x = solution[(i - 1) / 2];
             } else if (i == solution.length * 2) {
-                head.innerHTML = "$$" + toTex(solution[i / 2 - 1]) + " < x$$";
+                head.innerHTML = "$$" + nerdamer(solution[i / 2 - 1]).toTeX() + " < x$$";
                 if (solution[i / 2 - 1] < 0) {
                     x = intToFract(0);
                 } else {
                     x = intToFract(Math.round(solution[i / 2 - 1]) + 1);
                 }
             } else {
-                head.innerHTML = "$$" + toTex(solution[i / 2 - 1]) + " < x < " + toTex(solution[i / 2]) + "$$";
+                head.innerHTML = "$$" + nerdamer(solution[i / 2 - 1]).toTeX() + " < x < " + nerdamer(solution[i / 2]).toTeX() + "$$";
                 if (solution[i / 2 - 1] < 0 && solution[i / 2] > 0) {
                     x = intToFract(0);
                 } else if ((Math.floor(solution[i / 2 - 1]) + 1) < solution[i] && (solution[i / 2 - 1] % 1) != 0) {
@@ -67,15 +64,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else if (Math.floor(solution[i / 2]) > solution[i / 2 - 1] && (solution[i / 2] % 1) != 0) {
                     x = intToFract(Math.floor(solution[i / 2]));
                 } else {
-                    x = new algebra.Fraction(solution[i / 2 - 1].numer, solution[i / 2 - 1].denom).add(solution[i / 2]).divide(2);
+                    x = nerdamer(solution[i / 2 - 1]).add(nerdamer(solution[i / 2])).divide(2);
                 }
             }
             head.setAttribute("id", "tableHead" + i);
             header.appendChild(head);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "tableHead" + i]);
             const content = document.createElement("td");
-            const y__ = d.eval({"x": x});
-            content.innerHTML = "$$\\mathrm{f}^{\\prime}(" + toTex(x) + ")=" + toTex(y__) + "$$";
+            const y__ = y_.evaluate({"x": x});
+            content.innerHTML = "$$\\mathrm{f}^{\\prime}(" + nerdamer(x).toTeX() + ")=" + y__.toTeX() + "$$";
             content.setAttribute("id", "tableContent" + i);
             contents.appendChild(content);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "tableContent" + i]);
@@ -101,15 +98,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 extremum.setAttribute("id", "extremum" + i);
                 const calculation = document.createElement("span");
                 console.log(xs[i]);
-                let y_ = f.eval({"x": xs[i]});
-                calculation.innerHTML = "$$\\mathrm{f}(" + toTex(xs[i]) + ")=" + toTex(y_) + "$$";
+                let y_ = y.evaluate({"x": xs[i]});
+                calculation.innerHTML = "$$\\mathrm{f}(" + nerdamer(xs[i]).toTeX() + ")=" + nerdamer(y_).toTeX() + "$$";
                 calculation.setAttribute("id", "calculation" + i);
                 if (gradients[i - 1] < 0 && gradients[i + 1] > 0) {
-                    extremum.innerHTML = "$$Tiefpunkt(" + toTex(xs[i]) + "|" + toTex(y_) + ")$$";
+                    extremum.innerHTML = "$$Tiefpunkt(" + nerdamer(xs[i]).toTeX() + "|" + nerdamer(y_).toTeX() + ")$$";
                 } else if (gradients[i - 1] > 0 && gradients[i + 1] < 0) {
-                    extremum.innerHTML = "$$Hochpunkt(" + toTex(xs[i]) + "|" + toTex(y_) + ")$$"
+                    extremum.innerHTML = "$$Hochpunkt(" + nerdamer(xs[i]).toTeX() + "|" + nerdamer(y_).toTeX() + ")$$"
                 } else {
-                    extremum.innerHTML = "$$Sattelpunkt(" + toTex(xs[i]) + "|" + toTex(y_) + ")$$"
+                    extremum.innerHTML = "$$Sattelpunkt(" + nerdamer(xs[i]).toTeX() + "|" + nerdamer(y_).toTeX() + ")$$"
                 }
                 calculations.appendChild(calculation);
                 extrema.appendChild(extremum);
