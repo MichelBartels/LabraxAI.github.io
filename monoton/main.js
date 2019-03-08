@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     form.onsubmit = event => {
         form.style["display"] = "none";
         event.preventDefault();
-        const y = nerdamer(input.value.replace(",", ".");
+        const y = nerdamer(input.value.replace(",", "."));
         document.getElementById("y").innerHTML = "$$\\mathrm{f}(x)=" + y.toTeX() + "$$";
         MathJax.Hub.Queue(["Typeset", MathJax.Hub, "y"]);
         const y_ = nerdamer.diff(y, "x");
