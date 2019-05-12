@@ -9,7 +9,6 @@ precision mediump float;
 #define MAX_RAY_DEPTH 3
 #define PATHS_PER_PIXEL 256
 #define EPSILON 1e-3
-#define M_PI 3.1415926535897932384626433832795
 
 struct Material {
     vec3 color;
@@ -49,11 +48,11 @@ uniform bool activeObjects[MAX_OBJECTS];
 uniform Light lights[MAX_LIGHTS];
 uniform bool activeLights[MAX_LIGHTS];
 uniform float fov;
+uniform float windowWidth;
+uniform float windowHeight;
 uniform vec3 cameraPos;
-
-vec3 sunDir = normalize(vec3(-0.3,1.3,0.1));
-vec3 sunCol = 6.0*vec3(1.0,0.8,0.6);
-vec3 skyCol = 4.0*vec3(0.2,0.35,0.5);
+uniform float cameraXRotation;
+uniform float cameraYRotation;
 
 Distance getDistance(Object object, Ray ray) {
     if (object.sphere) {
@@ -114,7 +113,17 @@ Ray traceRay(Ray ray) {
 }
 
 Ray generateRay(float x, float y) {
-    return Ray(cameraPos, normalize(vec3(x / 500. - 1., y / 500. - 1., 1) * tan(M_PI * fov / 360.)), vec3(0.), Object(vec3(0.), 0., Material(vec3(0.), 0., 0.), false, false), 0., false);
+    float aspectRatio = windowWidth / windowHeight;
+    float angle = tan(radians(fov) / 2.);
+    float rotationXAngle = radians(cameraXRotation);
+    float sinX = sin(rotationXAngle);
+    float cosX = cos(rotationXAngle);
+    float rotationYAngle = radians(cameraYRotation);
+    float sinY = sin(rotationYAngle);
+    float cosY = cos(rotationYAngle);
+    x = (2. * x / windowWidth - 1.) * aspectRatio * angle;
+    y = (2. * y / windowHeight - 1.) * angle;
+    return Ray(cameraPos, normalize(vec3(x * cosY + sinY, y * cosX - sinX, -x * sinY + (y * sinX + cosX) * cosY)), vec3(0.), Object(vec3(0.), 0., Material(vec3(0.), 0., 0.), false, false), 0., false);
 }
 
 out vec4 outColor; 

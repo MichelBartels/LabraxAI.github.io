@@ -3,6 +3,7 @@ let __fragmentShaderSource
 let __objects;
 let __lights;
 let camera;
+let canvas;
 
 class Vector {
     constructor(arr) {
@@ -86,6 +87,36 @@ class Vector {
         for (let i = 0; i < this.arr.length; i++) {
             newArr.push(this.arr[i] / length);
         }
+        return new Vector(newArr);
+    }
+    rotateX(angle) {
+        let newArr = [];
+        angle = angle * Math.PI / 180;
+        let sinX = Math.sin(angle);
+        let cosX = Math.cos(angle);
+        newArr.push(this.arr[0]);
+        newArr.push(this.arr[1] * cosX - this.arr[2] * sinX);
+        newArr.push(this.arr[1] * sinX + this.arr[2] * cosX);
+        return new Vector(newArr);
+    }
+    rotateY(angle) {
+        let newArr = [];
+        angle = angle * Math.PI / 180;
+        let sinY = Math.sin(angle);
+        let cosY = Math.cos(angle);
+        newArr.push(this.arr[0] * cosY + this.arr[2] * sinY);
+        newArr.push(this.arr[1]);
+        newArr.push(-this.arr[0] * sinY + this.arr[2] * cosY);
+        return new Vector(newArr);
+    }
+    rotateZ(angle) {
+        let newArr = [];
+        angle = angle * Math.PI / 180;
+        let sinZ = Math.sin(angle);
+        let cosZ = Math.cos(angle);
+        newArr.push(this.arr[0] * cosZ - this.arr[1] * sinZ);
+        newArr.push(this.arr[0] * sinZ + this.arr[1] * cosZ);
+        newArr.push(this.arr[2]);
         return new Vector(newArr);
     }
     show() {
@@ -191,17 +222,28 @@ class Lights {
 }
 
 class Camera {
-    constructor(pos, fov, gl, prg) {
+    constructor(pos, fov, gl, prg, canvas) {
         this.pos = pos;
         this.fov = fov;
         this.gl = gl;
         this.prg = prg;
+        this.canvas = canvas;
+        this.xRotation = 0;
+        this.yRotation = 0;
     }
     update() {
         let posLoc = this.gl.getUniformLocation(this.prg, "cameraPos");
         this.gl.uniform3fv(posLoc, this.pos.arr);
         let fovLoc = this.gl.getUniformLocation(this.prg, "fov");
         this.gl.uniform1f(fovLoc, this.fov);
+        let widthLoc = this.gl.getUniformLocation(this.prg, "windowWidth") ;
+        this.gl.uniform1f(widthLoc, this.canvas.width);
+        let heightLoc = this.gl.getUniformLocation(this.prg, "windowHeight") ;
+        this.gl.uniform1f(heightLoc, this.canvas.height);
+        let xRotationLoc = this.gl.getUniformLocation(this.prg, "cameraXRotation") ;
+        this.gl.uniform1f(xRotationLoc, this.xRotation);
+        let yRotationLoc = this.gl.getUniformLocation(this.prg, "cameraYRotation") ;
+        this.gl.uniform1f(yRotationLoc, this.yRotation);
     }
 }
 
@@ -235,6 +277,7 @@ function createProgram(gl, vertexShader, fragmentShader) {
 window.onload = () => {
     let gl;
     function updateGL() {
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         update();
         __objects.update();
         __lights.update();
@@ -243,7 +286,7 @@ window.onload = () => {
         window.requestAnimationFrame(updateGL);
     }
     load().then(() => {
-        let canvas = document.querySelector("canvas");
+        canvas = document.querySelector("canvas");
         gl = canvas.getContext("webgl2");
 
         gl.clearColor(0, 0, 0, 1);
@@ -282,7 +325,7 @@ window.onload = () => {
         
         __objects = new Objects3D(gl, program);
         __lights = new Lights(gl, program);
-        camera = new Camera(new Vector([0, 1, 0]), 90, gl, program);
+        camera = new Camera(new Vector([0, 1, 0]), 90, gl, program, canvas);
 
         setup();
         updateGL();

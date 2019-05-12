@@ -8,8 +8,32 @@ let keysPressed = {
 let sphere;
 let speed = 0.05;
 let vel;
+let jumping = false;
+let pointerLocked = false;
+let mouseVector;
 
 function setup() {
+    camera.fov = 45;
+    mouseVector = new Vector([0, 0]);
+    canvas.requestPointerLock = canvas.requestPointerLock || canvas.mozRequestPointerLock;
+    canvas.requestPointerLock();
+    let mouseMoved = (event) => {
+        mouseVector = mouseVector.add(new Vector([event.movementX, event.movementY]));
+    };
+    let pointerLockChange = () => {
+        if (document.pointerLockElement == canvas) {
+            pointerLocked = true;
+            document.addEventListener("mousemove", mouseMoved, false);
+        } else {
+            pointerLocked = false;
+            document.removeEventListener("mousemove", mouseMoved, false);
+        }
+    };
+    if ("onpointerlockchange" in document) {
+        document.addEventListener("pointerlockchange", pointerLockChange, false);
+    } else if ("onmozpointerlockchange" in document) {
+        document.addEventListener('mozpointerlockchange', pointerLockChange, false);
+    }
     sphere = new Sphere(new Vector([0, 1, 5]), new Material(new Vector([0, 1, 0]), 1, 0), 2);
     new Sphere(new Vector([1, 1, 2]), new Material(new Vector([1, 0, 0]), 1, 0), 1);
     new Plane(new Vector([0, 1, 0]), new Material(new Vector([1, 1, 1]), 1, 0));
@@ -51,26 +75,36 @@ function setup() {
     });
 }
 function update() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     sphere.pos = sphere.pos.add(new Vector([0, 0.001, 0]));
+    let movement = new Vector([0, 0, 0]);
     if (keysPressed.w) {
-        camera.pos = camera.pos.add(new Vector([0, 0, speed]));
+        movement = movement.add(new Vector([0, 0, speed]));
     }
     if (keysPressed.s) {
-        camera.pos = camera.pos.add(new Vector([0, 0, -speed]));
+        movement = movement.add(new Vector([0, 0, -speed]));
     }
     if (keysPressed.a) {
-        camera.pos = camera.pos.add(new Vector([-speed, 0, 0]));
+        movement = movement.add(new Vector([-speed, 0, 0]));
     }
     if (keysPressed.d) {
-        camera.pos = camera.pos.add(new Vector([speed, 0, 0]));
+        movement = movement.add(new Vector([speed, 0, 0]));
     }
-    if (keysPressed.space) {
+    if (keysPressed.space && !jumping) {
         vel = 0.5;
+        jumping = true;
     }
     camera.pos = camera.pos.add(new Vector([0, vel, 0]));
     vel -= 0.02;
     if (camera.pos.arr[1] < 1) {
         camera.pos.arr[1] = 1;
         vel = 0;
+        jumping = false;
     }
+    let xAngle = mouseVector.arr[1] / 20;
+    let yAngle = mouseVector.arr[0] / 20;
+    camera.xRotation = xAngle;
+    camera.yRotation = yAngle;
+    camera.pos = camera.pos.add(movement.rotateX(xAngle).rotateY(yAngle));
 }
