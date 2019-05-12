@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ray Tracing</title>
+        <script src="renderer.js"></script>
+        <script src="index.js"></script>
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+            #info {
+                width: 300px;
+                height: 150px;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="info">
+            <p id="fps"></p>
+            <p>Fov: <input type="range" name="fov" id="fov" min="1" max="180" step="0.1" value="45"></p>
+            <p>Ray steps: <input type="range" name="raySteps" id="raySteps" min="1" max="512" step="1" value="4"></p>
+            <p>Sample steps: <input type="range" name="sampleSteps" id="sampleSteps" min="1" max="512" step="1" value="32"></p>
+        </div>
+        <canvas></canvas>
+    </body>
+</html>
