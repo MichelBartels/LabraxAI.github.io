@@ -46,9 +46,9 @@ function setup() {
     } else if ("onmozpointerlockchange" in document) {
         document.addEventListener('mozpointerlockchange', pointerLockChange, false);
     }
-    sphere = new Sphere(new Vector([0, 1, 5]), new Material(new Vector([0, 1, 0]), 0.75), 2);
-    new Sphere(new Vector([1, 1, 2]), new Material(new Vector([1, 0, 0]), 0.5), 1);
-    new Plane(new Vector([0, 1, 0]), new Material(new Vector([1, 1, 1]), 0.));
+    sphere = new Sphere(new Vector([0, 1, 5]), new Material(new Vector([0, 1, 0]), 1.75), 2);
+    new Sphere(new Vector([1, 1, 2]), new Material(new Vector([1, 0, 0]), 0.25), 1);
+    new Plane(new Vector([0, 1, 0]), new Material(new Vector([1, 1, 1]), 0.5));
     new Light(new Vector([-3, 1, 0]), 0.2, new Vector([1, 1, 1]));
     vel = 0;
     document.addEventListener("keydown", (event) => {
@@ -118,7 +118,7 @@ function update() {
     let yAngle = mouseVector.arr[0] / 20;
     camera.xRotation = xAngle;
     camera.yRotation = yAngle;
-    camera.pos = camera.pos.add(movement.rotateX(xAngle).rotateY(yAngle));
+    camera.pos = camera.pos.add(movement.rotateY(yAngle));
     camera.fov = fov.value;
     __raySteps = raySteps.value;
     __samples = samples.value;

@@ -151,7 +151,9 @@ Ray generateRay(float x, float y) {
     float cosY = cos(rotationYAngle);
     x = (2. * x / windowWidth - 1.) * aspectRatio * angle;
     y = (2. * y / windowHeight - 1.) * angle;
-    return Ray(cameraPos, normalize(vec3(x * cosY + sinY, y * cosX - sinX, -x * sinY + (y * sinX + cosX) * cosY)), vec3(0.), Object(vec3(0.), 0., Material(vec3(0.), 0.), false, false), 0., false);
+    float z = y * sinX + cosX;
+    y = y * cosX - sinX;
+    return Ray(cameraPos, normalize(vec3(x * cosY + z * sinY, y, -x * sinY + z * cosY)), vec3(0.), Object(vec3(0.), 0., Material(vec3(0.), 0.), false, false), 0., false);
 }
 
 out vec4 outColor; 
@@ -168,7 +170,7 @@ void main() {
                 break;
             }
             Material material = ray.intersectObject.material;
-            mask *= material.color * 0.5;
+            mask *= material.color * material.albedo;
             ray.rayDirection = getCosineWeightedSample(ray.normal);
             ray.rayOrigin += ray.rayDirection * EPSILON;
         }
