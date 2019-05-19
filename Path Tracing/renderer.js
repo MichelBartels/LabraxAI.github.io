@@ -127,9 +127,10 @@ class Vector {
 }
 
 class Material {
-    constructor(color, albedo) {
+    constructor(color, albedo, light) {
         this.color = color;
         this.albedo = albedo;
+        this.light = light;
     }
 }
 
@@ -147,6 +148,15 @@ class Plane {
         this.normal = normal;
         this.material = material;
         __objects.addObject(this, "plane");
+    }
+}
+
+class Box {
+    constructor(pos1, material, pos2) {
+        this.pos1 = pos1;
+        this.material = material;
+        this.pos2 = pos2;
+        __objects.addObject(this, "box");
     }
 }
 
@@ -184,15 +194,25 @@ class Objects3D {
                 this.gl.uniform1f(radiusLoc, this.objects[i].object.radius);
             }
             if (this.objects[i].type == "plane") {
-                let sphereLoc = this.gl.getUniformLocation(this.prg, "objects[" + i + "].plane");
-                this.gl.uniform1i(sphereLoc, 1);
+                let planeLoc = this.gl.getUniformLocation(this.prg, "objects[" + i + "].plane");
+                this.gl.uniform1i(planeLoc, 1);
                 let normalLoc = this.gl.getUniformLocation(this.prg, "objects[" + i + "].pos");
                 this.gl.uniform3fv(normalLoc, this.objects[i].object.normal.arr);
+            }
+            if (this.objects[i].type == "box") {
+                let boxLoc = this.gl.getUniformLocation(this.prg, "objects[" + i + "].box");
+                this.gl.uniform1i(boxLoc, 1);
+                let pos1Loc = this.gl.getUniformLocation(this.prg, "objects[" + i + "].pos");
+                this.gl.uniform3fv(pos1Loc, this.objects[i].object.pos1.arr);
+                let pos2Loc = this.gl.getUniformLocation(this.prg, "objects[" + i + "].arg2");
+                this.gl.uniform3fv(pos2Loc, this.objects[i].object.pos2.arr);
             }
             let colorLoc = this.gl.getUniformLocation(this.prg, "objects[" + i + "].material.color");
             this.gl.uniform3fv(colorLoc, this.objects[i].object.material.color.arr);
             let diffuseLoc = this.gl.getUniformLocation(this.prg, "objects[" + i + "].material.albedo");
             this.gl.uniform1f(diffuseLoc, this.objects[i].object.material.albedo);
+            let lightLoc = this.gl.getUniformLocation(this.prg, "objects[" + i + "].material.light");
+            this.gl.uniform3fv(lightLoc, this.objects[i].object.material.light.arr);
         }
     }
 }
@@ -281,6 +301,8 @@ window.onload = () => {
         gl.uniform1i(samplesLoc, __samples);
         let rayStepsLoc = gl.getUniformLocation(program, "raySteps");
         gl.uniform1i(rayStepsLoc, __raySteps);
+        let seedLoc = gl.getUniformLocation(program, "firstSeed");
+        gl.uniform2fv(seedLoc, [Math.random(), Math.random()]);
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         update();
         __objects.update();
@@ -329,7 +351,7 @@ window.onload = () => {
         
         __objects = new Objects3D(gl, program);
         __lights = new Lights(gl, program);
-        camera = new Camera(new Vector([0, 1, 0]), 90, gl, program, canvas);
+        camera = new Camera(new Vector([0.2, 0, -1.5]), 90, gl, program, canvas);
 
         setup();
         updateGL();

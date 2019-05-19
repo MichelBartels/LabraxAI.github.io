@@ -5,7 +5,6 @@ let keysPressed = {
     "d": false,
     "space": false
 }
-let sphere;
 let speed = 0.05;
 let vel;
 let jumping = false;
@@ -27,6 +26,7 @@ function setup() {
     let clickEvent = () => {
         canvas.requestPointerLock();
     };
+    canvas.addEventListener("click", clickEvent);
     let mouseMoved = (event) => {
         mouseVector = mouseVector.add(new Vector([event.movementX, event.movementY]));
     };
@@ -46,10 +46,20 @@ function setup() {
     } else if ("onmozpointerlockchange" in document) {
         document.addEventListener('mozpointerlockchange', pointerLockChange, false);
     }
-    sphere = new Sphere(new Vector([0, 1, 5]), new Material(new Vector([0, 1, 0]), 1.75), 2);
-    new Sphere(new Vector([1, 1, 2]), new Material(new Vector([1, 0, 0]), 0.25), 1);
-    new Plane(new Vector([0, 1, 0]), new Material(new Vector([1, 1, 1]), 0.5));
+    //new Plane(new Vector([0, 1, 0]), new Material(new Vector([1, 1, 1]), 1, new Vector([0, 0, 0])));
+    let roomSize = 3;
+    new Box(new Vector([-roomSize - 1, -1, -roomSize - 1]), new Material(new Vector([0.4, 0.4, 0.4]), 1, new Vector([0, 0, 0])), new Vector([roomSize + 1, 0, roomSize + 1]));
+    new Box(new Vector([-roomSize - 1, roomSize, -roomSize - 1]), new Material(new Vector([0.1, 0.1, 0.1]), 1, new Vector([0, 0, 0])), new Vector([roomSize + 1, roomSize + 1, roomSize + 1]));
+    new Box(new Vector([-roomSize - 1, 0, -roomSize - 1]), new Material(new Vector([0.160784314, 0.364705882, 0.682352941]), 0.5, new Vector([0, 0, 0])), new Vector([-roomSize, roomSize, roomSize + 1]));
+    new Box(new Vector([-roomSize, 0, roomSize]), new Material(new Vector([0.364705882, 0.160784314, 0.682352941]), 0.5, new Vector([0, 0, 0])), new Vector([roomSize, roomSize, roomSize]));
+    new Box(new Vector([roomSize, 0, -roomSize - 1]), new Material(new Vector([0.682352941, 0.160784314, 0.364705882]), 0.5, new Vector([0, 0, 0])), new Vector([roomSize + 1, roomSize, roomSize + 1]));
+    new Box(new Vector([-roomSize, 0, -roomSize - 1]), new Material(new Vector([0.682352941, 0.364705882, 0.160784314]), 0.5, new Vector([0, 0, 0])), new Vector([roomSize, roomSize, -roomSize]));
     new Light(new Vector([-3, 1, 0]), 0.2, new Vector([1, 1, 1]));
+    let lightSize = 0.5;
+    new Box(new Vector([-lightSize, roomSize - lightSize, - lightSize]), new Material(new Vector([1, 1, 1]), 1, new Vector([3, 3, 3])), new Vector([lightSize, roomSize + lightSize, lightSize]));
+    new Sphere(new Vector([0, 0.5, 0]), new Material(new Vector([1, 0, 0]), 1, new Vector([0, 0, 0])), 0.5);
+    new Sphere(new Vector([-1, 1, -1]), new Material(new Vector([0, 1, 0]), 1, new Vector([0, 0, 0])), 1);
+    new Sphere(new Vector([-1, 2, 1]), new Material(new Vector([0, 0, 1]), 1, new Vector([0, 0, 0])), 0.75);
     vel = 0;
     document.addEventListener("keydown", (event) => {
         if (event.keyCode == 87) {
@@ -89,7 +99,6 @@ function setup() {
 function update() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    sphere.pos = sphere.pos.add(new Vector([0, 0.001, 0]));
     let movement = new Vector([0, 0, 0]);
     if (keysPressed.w) {
         movement = movement.add(new Vector([0, 0, speed]));
