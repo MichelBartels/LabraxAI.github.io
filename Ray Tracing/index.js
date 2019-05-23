@@ -17,6 +17,10 @@ function setup() {
     mouseVector = new Vector([0, 0]);
     canvas.requestPointerLock = canvas.requestPointerLock || canvas.mozRequestPointerLock;
     canvas.requestPointerLock();
+    let clickEvent = () => {
+        canvas.requestPointerLock();
+    };
+    canvas.addEventListener("click", clickEvent);
     let mouseMoved = (event) => {
         mouseVector = mouseVector.add(new Vector([event.movementX, event.movementY]));
     };
@@ -24,9 +28,11 @@ function setup() {
         if (document.pointerLockElement == canvas) {
             pointerLocked = true;
             document.addEventListener("mousemove", mouseMoved, false);
+            canvas.removeEventListener("click", clickEvent);
         } else {
             pointerLocked = false;
             document.removeEventListener("mousemove", mouseMoved, false);
+            canvas.addEventListener("click", clickEvent);
         }
     };
     if ("onpointerlockchange" in document) {
@@ -77,7 +83,6 @@ function setup() {
 function update() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    sphere.pos = sphere.pos.add(new Vector([0, 0.001, 0]));
     let movement = new Vector([0, 0, 0]);
     if (keysPressed.w) {
         movement = movement.add(new Vector([0, 0, speed]));
@@ -106,5 +111,5 @@ function update() {
     let yAngle = mouseVector.arr[0] / 20;
     camera.xRotation = xAngle;
     camera.yRotation = yAngle;
-    camera.pos = camera.pos.add(movement.rotateX(xAngle).rotateY(yAngle));
+    camera.pos = camera.pos.add(movement.rotateY(yAngle));
 }
