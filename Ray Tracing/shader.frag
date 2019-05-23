@@ -125,7 +125,7 @@ Ray generateRay(float x, float y) {
     y = (2. * y / windowHeight - 1.) * angle;
     float z = y * sinX + cosX;
     y = y * cosX - sinX;
-    return Ray(cameraPos, normalize(vec3(x * cosY + z * sinY, y, -x * sinY + z * cosY)), vec3(0.), Object(vec3(0.), 0., vec3(0.), Material(vec3(0.), 0., vec3(0.)), false, false, false), 0., false);
+    return Ray(cameraPos, normalize(vec3(x * cosY + z * sinY, y, -x * sinY + z * cosY)), vec3(0.), Object(vec3(0.), 0., Material(vec3(0.), 0., 0.), false, false), 0., false);
 }
 
 out vec4 outColor; 
