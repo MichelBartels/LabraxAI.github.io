@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Face Mover</title>
+        <link rel="stylesheet" href="flat-remix.min.css">
+        <link rel="stylesheet" href="index.css">
+        <script>
+            let loader;
+            let loaded;
+            let spinner;
+            let preprocessor;
+            let inputSize;
+            let outputSize;
+            let time = 0;
+            window.onload = () => {
+                let faceImg = document.getElementById("imgFace");
+                let webcamVideo = document.createElement("video");
+                navigator.mediaDevices.getUserMedia({video: true}).then((stream) => {
+                    webcamVideo.srcObject = stream;
+                    webcamVideo.play();
+                    let webcamCanvas = document.getElementById("webcam");
+                    let ctx = webcamCanvas.getContext("2d");
+                    let faceCanvas = document.getElementById("face");
+                    faceCtx = faceCanvas.getContext("2d");
+                    webcamVideo.onloadedmetadata = () => {
+                        webcamCanvas.width = webcamVideo.videoWidth;
+                        webcamCanvas.height = webcamVideo.videoHeight;
+                    }
+                    (function updateWebcam(){
+                        ctx.drawImage(webcamVideo, 0, 0, webcamVideo.videoWidth, webcamVideo.videoHeight);
+                        //ctx.drawImage(faceImg, 0, 0, faceImg.naturalWidth, faceImg.naturalHeight);
+                        if (loaded) {
+                            if (!inputSize) {
+                                inputSize = new Module.VectorInt();
+                                inputSize.push_back(webcamVideo.videoHeight);
+                                inputSize.push_back(webcamVideo.videoWidth);
+                            }
+                            let imgData = ctx.getImageData(0, 0, webcamVideo.videoWidth, webcamVideo.videoHeight).data;
+                            let arrLength = webcamVideo.videoHeight * webcamVideo.videoWidth * 4;
+                            let ptr = Module._malloc(arrLength);
+                            let bytes = new Uint8Array(Module.HEAPU8.buffer, ptr, arrLength);
+                            bytes.set(new Uint8Array(imgData));
+                            if (preprocessor.loadImageFromArray(outputSize, bytes.byteOffset, inputSize)) {
+                                let faceData = faceCtx.createImageData(256, 256);
+                                let faceVector = preprocessor.makeJointImage();
+                                for (i = 0; i < faceData.data.length / 4; i++) {
+                                    faceData.data[i * 4 + 0] = (faceVector.get(i * 3 + 0) + 1) * 127.5;
+                                    faceData.data[i * 4 + 1] = (faceVector.get(i * 3 + 1) + 1) * 127.5;
+                                    faceData.data[i * 4 + 2] = (faceVector.get(i * 3 + 2) + 1) * 127.5;
+                                    faceData.data[i * 4 + 3] = 255;
+                                }
+                                faceCtx.putImageData(faceData, 0, 0);
+                                faceVector.delete();
+                                console.log("face found");
+                            }
+                            Module._free(bytes.byteOffset);
+                        }
+                        requestAnimationFrame(updateWebcam);
+                        console.log(1 / ((Date.now() - time) / 1000));
+                        time = Date.now();
+                    })();
+                })
+                loader = document.getElementById("loader");
+                spinner = document.getElementById("determinate");
+            }
+            Module = {
+                    preRun: [],
+                    postRun: [],
+                    print: console.log,
+                    printErr: console.error,
+                    setStatus: function(e) {
+                        if (Module.setStatus.last || (Module.setStatus.last = {
+                            time: Date.now(),
+                            text: ""
+                        }),
+                        e !== Module.setStatus.last.text) {
+                            let t = e.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/)
+                            if (t && t.length > 3) {
+                                let max = parseInt(t[4]);
+                                if (loader) {
+                                    let val = parseInt(t[2]);
+                                    if (val == 1 && max == 2) {
+                                        loader.style.opacity = 0;
+                                    } else if (max != 1 && max != 2) {
+                                        spinner.style["stroke-dashoffset"] = 2 * 3.14159265359 * 8.75 * (3 - val/max);
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    totalDependencies: 0,
+                    monitorRunDependencies: function(e) {
+                        this.totalDependencies = Math.max(this.totalDependencies, e),
+                        Module.setStatus(e ? "Preparing... (" + (this.totalDependencies - e) + "/" + this.totalDependencies + ")" : "All downloads complete.")
+                    },
+                    onRuntimeInitialized: () => {
+                        preprocessor = new Module.Preprocessor();
+                        outputSize = new Module.VectorInt();
+                        outputSize.push_back(256);
+                        outputSize.push_back(256);
+                        loaded = true;
+                        loader.style.opacity = 0;
+                    },
+                    locateFile: (path) => {
+                        return "../build/" + path;
+                    }
+                };
+                Module.setStatus("Downloading..."),
+                window.onerror = function(e) {
+                    Module.setStatus("Exception thrown, see JavaScript console"),
+                    Module.setStatus = function(e) {
+                        e && Module.printErr("[post-exception status] " + e)
+                    }
+                }
+        </script>
+        <script async src="Preprocessing.js"></script>
+        <style>
+            #face {
+                height: 256px !important;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="loader">
+            <div class="paper">
+                <span id="landmarkProcess">
+                    <h4>Loading face landmark predictor</h4>
+                    <svg class="determinate-circle" version="1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 24 24">
+                        <path id="determinate" d="M12 3.25A8.75 8.75 0 1 1 3.25 12 A 8.75,8.75 0 0 1 12,3.25" fill="none" stroke-width="0.5"  stroke="black" stroke-linecap="square"/>
+                    </svg>
+                </span>
+            </div>
+        </div>
+        <canvas class="with-shadow" id="webcam"></canvas>
+        <canvas class="with-shadow" id="face" width="256" height="256"></canvas>
+    </body>
+</html>

@@ -1,0 +1,1701 @@
+html {
+    background: #2c3e50; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #2c3e50, #4ca1af); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #2c3e50, #4ca1af); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+body {
+    background-color: transparent;
+    display: flex;
+}
+body .paper {
+    margin: 10px;
+}
+#webcam {
+    padding: 0;
+}
+#loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #6190e8; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #6190e8, #a7bfe8); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #6190e8, #a7bfe8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */  
+    opacity: 1;
+    transition: opacity 250ms;
+}
+#loader .paper {
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#landmarkProcess {
+    display: flex;
+}
+#landmarkProcess h4 {
+    order: 0;
+    white-space: nowrap;
+}
+#landmarkProcess svg {
+    order: 1;
+}
+@keyframes material-spin {
+    /* 320 frames */
+    /* Ease-in 0-75%  */
+    0.0001% {
+      /* circlePercentage(0.5, 75); */
+      stroke-dashoffset: 123.4253213779;
+      transform: rotate(0deg) rotate(0deg);
+    }
+    0.3125% {
+      /* circlePercentage(2.1675, 75); */
+      stroke-dashoffset: 122.5085653717;
+      transform: rotate(0deg) rotate(4.5deg);
+    }
+    0.625% {
+      /* circlePercentage(4.1775, 75); */
+      stroke-dashoffset: 121.4035101558;
+      transform: rotate(0deg) rotate(9deg);
+    }
+    0.9375% {
+      /* circlePercentage(6.04125, 75); */
+      stroke-dashoffset: 120.3788600769;
+      transform: rotate(0deg) rotate(13.5deg);
+    }
+    1.25% {
+      /* circlePercentage(7.77, 75); */
+      stroke-dashoffset: 119.4284301244;
+      transform: rotate(0deg) rotate(18deg);
+    }
+    1.5625% {
+      /* circlePercentage(9.375, 75); */
+      stroke-dashoffset: 118.5460352878;
+      transform: rotate(0deg) rotate(22.5deg);
+    }
+    1.875% {
+      /* circlePercentage(10.8675, 75); */
+      stroke-dashoffset: 117.7254905566;
+      transform: rotate(0deg) rotate(27deg);
+    }
+    2.1875% {
+      /* circlePercentage(12.25875, 75); */
+      stroke-dashoffset: 116.9606109202;
+      transform: rotate(0deg) rotate(31.5deg);
+    }
+    2.5% {
+      /* circlePercentage(13.56, 75); */
+      stroke-dashoffset: 116.2452113681;
+      transform: rotate(0deg) rotate(36deg);
+    }
+    2.8125% {
+      /* circlePercentage(14.7825, 75); */
+      stroke-dashoffset: 115.5731068898;
+      transform: rotate(0deg) rotate(40.5deg);
+    }
+    3.125% {
+      /* circlePercentage(15.9375, 75); */
+      stroke-dashoffset: 114.9381124747;
+      transform: rotate(0deg) rotate(45deg);
+    }
+    3.4375% {
+      /* circlePercentage(17.03625, 75); */
+      stroke-dashoffset: 114.3340431123;
+      transform: rotate(0deg) rotate(49.5deg);
+    }
+    3.75% {
+      /* circlePercentage(18.09, 75); */
+      stroke-dashoffset: 113.754713792;
+      transform: rotate(0deg) rotate(54deg);
+    }
+    4.0625% {
+      /* circlePercentage(19.11, 75); */
+      stroke-dashoffset: 113.1939395033;
+      transform: rotate(0deg) rotate(58.5deg);
+    }
+    4.375% {
+      /* circlePercentage(20.1075, 75); */
+      stroke-dashoffset: 112.6455352357;
+      transform: rotate(0deg) rotate(63deg);
+    }
+    4.6875% {
+      /* circlePercentage(21.09375, 75); */
+      stroke-dashoffset: 112.1033159787;
+      transform: rotate(0deg) rotate(67.5deg);
+    }
+    5% {
+      /* circlePercentage(22.08, 75); */
+      stroke-dashoffset: 111.5610967216;
+      transform: rotate(0deg) rotate(72deg);
+    }
+    5.3125% {
+      /* circlePercentage(23.0775, 75); */
+      stroke-dashoffset: 111.012692454;
+      transform: rotate(0deg) rotate(76.5deg);
+    }
+    5.625% {
+      /* circlePercentage(24.0975, 75); */
+      stroke-dashoffset: 110.4519181654;
+      transform: rotate(0deg) rotate(81deg);
+    }
+    5.9375% {
+      /* circlePercentage(25.15125, 75); */
+      stroke-dashoffset: 109.8725888451;
+      transform: rotate(0deg) rotate(85.5deg);
+    }
+    6.25% {
+      /* circlePercentage(26.25, 75); */
+      stroke-dashoffset: 109.2685194827;
+      transform: rotate(0deg) rotate(90deg);
+    }
+    6.5625% {
+      /* circlePercentage(27.405, 75); */
+      stroke-dashoffset: 108.6335250676;
+      transform: rotate(0deg) rotate(94.5deg);
+    }
+    6.875% {
+      /* circlePercentage(28.6275, 75); */
+      stroke-dashoffset: 107.9614205892;
+      transform: rotate(0deg) rotate(99deg);
+    }
+    7.1875% {
+      /* circlePercentage(29.92875, 75); */
+      stroke-dashoffset: 107.2460210372;
+      transform: rotate(0deg) rotate(103.5deg);
+    }
+    7.5% {
+      /* circlePercentage(31.32, 75); */
+      stroke-dashoffset: 106.4811414008;
+      transform: rotate(0deg) rotate(108deg);
+    }
+    7.8125% {
+      /* circlePercentage(32.8125, 75); */
+      stroke-dashoffset: 105.6605966696;
+      transform: rotate(0deg) rotate(112.5deg);
+    }
+    8.125% {
+      /* circlePercentage(34.4175, 75); */
+      stroke-dashoffset: 104.778201833;
+      transform: rotate(0deg) rotate(117deg);
+    }
+    8.4375% {
+      /* circlePercentage(36.14625, 75); */
+      stroke-dashoffset: 103.8277718805;
+      transform: rotate(0deg) rotate(121.5deg);
+    }
+    8.75% {
+      /* circlePercentage(38.01, 75); */
+      stroke-dashoffset: 102.8031218016;
+      transform: rotate(0deg) rotate(126deg);
+    }
+    9.0625% {
+      /* circlePercentage(40.02, 75); */
+      stroke-dashoffset: 101.6980665857;
+      transform: rotate(0deg) rotate(130.5deg);
+    }
+    9.375% {
+      /* circlePercentage(42.1875, 75); */
+      stroke-dashoffset: 100.5064212223;
+      transform: rotate(0deg) rotate(135deg);
+    }
+    9.6875% {
+      /* circlePercentage(44.52375, 75); */
+      stroke-dashoffset: 99.2220007008;
+      transform: rotate(0deg) rotate(139.5deg);
+    }
+    10% {
+      /* circlePercentage(47.04, 75); */
+      stroke-dashoffset: 97.8386200108;
+      transform: rotate(0deg) rotate(144deg);
+    }
+    10.3125% {
+      /* circlePercentage(49.7475, 75); */
+      stroke-dashoffset: 96.3500941416;
+      transform: rotate(0deg) rotate(148.5deg);
+    }
+    10.625% {
+      /* circlePercentage(52.6575, 75); */
+      stroke-dashoffset: 94.7502380827;
+      transform: rotate(0deg) rotate(153deg);
+    }
+    10.9375% {
+      /* circlePercentage(55.78125, 75); */
+      stroke-dashoffset: 93.0328668237;
+      transform: rotate(0deg) rotate(157.5deg);
+    }
+    11.25% {
+      /* circlePercentage(59.13, 75); */
+      stroke-dashoffset: 91.1917953539;
+      transform: rotate(0deg) rotate(162deg);
+    }
+    11.5625% {
+      /* circlePercentage(62.715, 75); */
+      stroke-dashoffset: 89.2208386629;
+      transform: rotate(0deg) rotate(166.5deg);
+    }
+    11.875% {
+      /* circlePercentage(66.5475, 75); */
+      stroke-dashoffset: 87.11381174;
+      transform: rotate(0deg) rotate(171deg);
+    }
+    12.1875% {
+      /* circlePercentage(70.63875, 75); */
+      stroke-dashoffset: 84.8645295748;
+      transform: rotate(0deg) rotate(175.5deg);
+    }
+    12.5% {
+      /* circlePercentage(75, 75); */
+      stroke-dashoffset: 82.4668071567;
+      transform: rotate(0deg) rotate(180deg);
+    }
+    /* Ease-out 75-150%  */
+    12.8125% {
+      /* circlePercentage(75.13828125, 75); */
+      stroke-dashoffset: 82.3907830689;
+      transform: rotate(0deg) rotate(184.5deg);
+    }
+    13.125% {
+      /* circlePercentage(75.54375, 75); */
+      stroke-dashoffset: 82.1678649808;
+      transform: rotate(0deg) rotate(189deg);
+    }
+    13.4375% {
+      /* circlePercentage(76.20234375, 75); */
+      stroke-dashoffset: 81.8057841556;
+      transform: rotate(0deg) rotate(193.5deg);
+    }
+    13.75% {
+      /* circlePercentage(77.1, 75); */
+      stroke-dashoffset: 81.3122718565;
+      transform: rotate(0deg) rotate(198deg);
+    }
+    14.0625% {
+      /* circlePercentage(78.22265625, 75); */
+      stroke-dashoffset: 80.6950593467;
+      transform: rotate(0deg) rotate(202.5deg);
+    }
+    14.375% {
+      /* circlePercentage(79.55625, 75); */
+      stroke-dashoffset: 79.9618778894;
+      transform: rotate(0deg) rotate(207deg);
+    }
+    14.6875% {
+      /* circlePercentage(81.08671875, 75); */
+      stroke-dashoffset: 79.1204587476;
+      transform: rotate(0deg) rotate(211.5deg);
+    }
+    15% {
+      /* circlePercentage(82.8, 75); */
+      stroke-dashoffset: 78.1785331846;
+      transform: rotate(0deg) rotate(216deg);
+    }
+    15.3125% {
+      /* circlePercentage(84.68203125, 75); */
+      stroke-dashoffset: 77.1438324635;
+      transform: rotate(0deg) rotate(220.5deg);
+    }
+    15.625% {
+      /* circlePercentage(86.71875, 75); */
+      stroke-dashoffset: 76.0240878476;
+      transform: rotate(0deg) rotate(225deg);
+    }
+    15.9375% {
+      /* circlePercentage(88.89609375, 75); */
+      stroke-dashoffset: 74.8270306;
+      transform: rotate(0deg) rotate(229.5deg);
+    }
+    16.25% {
+      /* circlePercentage(91.2, 75); */
+      stroke-dashoffset: 73.5603919838;
+      transform: rotate(0deg) rotate(234deg);
+    }
+    16.5625% {
+      /* circlePercentage(93.61640625, 75); */
+      stroke-dashoffset: 72.2319032623;
+      transform: rotate(0deg) rotate(238.5deg);
+    }
+    16.875% {
+      /* circlePercentage(96.13125, 75); */
+      stroke-dashoffset: 70.8492956985;
+      transform: rotate(0deg) rotate(243deg);
+    }
+    17.1875% {
+      /* circlePercentage(98.73046875, 75); */
+      stroke-dashoffset: 69.4203005558;
+      transform: rotate(0deg) rotate(247.5deg);
+    }
+    17.5% {
+      /* circlePercentage(101.4, 75); */
+      stroke-dashoffset: 67.9526490972;
+      transform: rotate(0deg) rotate(252deg);
+    }
+    17.8125% {
+      /* circlePercentage(104.12578125, 75); */
+      stroke-dashoffset: 66.4540725859;
+      transform: rotate(0deg) rotate(256.5deg);
+    }
+    18.125% {
+      /* circlePercentage(106.89375, 75); */
+      stroke-dashoffset: 64.932302285;
+      transform: rotate(0deg) rotate(261deg);
+    }
+    18.4375% {
+      /* circlePercentage(109.68984375, 75); */
+      stroke-dashoffset: 63.3950694579;
+      transform: rotate(0deg) rotate(265.5deg);
+    }
+    18.75% {
+      /* circlePercentage(112.5, 75); */
+      stroke-dashoffset: 61.8501053676;
+      transform: rotate(0deg) rotate(270deg);
+    }
+    19.0625% {
+      /* circlePercentage(115.31015625, 75); */
+      stroke-dashoffset: 60.3051412772;
+      transform: rotate(0deg) rotate(274.5deg);
+    }
+    19.375% {
+      /* circlePercentage(118.10625, 75); */
+      stroke-dashoffset: 58.7679084501;
+      transform: rotate(0deg) rotate(279deg);
+    }
+    19.6875% {
+      /* circlePercentage(120.87421875, 75); */
+      stroke-dashoffset: 57.2461381493;
+      transform: rotate(0deg) rotate(283.5deg);
+    }
+    20% {
+      /* circlePercentage(123.6, 75); */
+      stroke-dashoffset: 55.747561638;
+      transform: rotate(0deg) rotate(288deg);
+    }
+    20.3125% {
+      /* circlePercentage(126.26953125, 75); */
+      stroke-dashoffset: 54.2799101793;
+      transform: rotate(0deg) rotate(292.5deg);
+    }
+    20.625% {
+      /* circlePercentage(128.86875, 75); */
+      stroke-dashoffset: 52.8509150366;
+      transform: rotate(0deg) rotate(297deg);
+    }
+    20.9375% {
+      /* circlePercentage(131.38359375, 75); */
+      stroke-dashoffset: 51.4683074728;
+      transform: rotate(0deg) rotate(301.5deg);
+    }
+    21.25% {
+      /* circlePercentage(133.8, 75); */
+      stroke-dashoffset: 50.1398187513;
+      transform: rotate(0deg) rotate(306deg);
+    }
+    21.5625% {
+      /* circlePercentage(136.10390625, 75); */
+      stroke-dashoffset: 48.8731801351;
+      transform: rotate(0deg) rotate(310.5deg);
+    }
+    21.875% {
+      /* circlePercentage(138.28125, 75); */
+      stroke-dashoffset: 47.6761228875;
+      transform: rotate(0deg) rotate(315deg);
+    }
+    22.1875% {
+      /* circlePercentage(140.31796875, 75); */
+      stroke-dashoffset: 46.5563782716;
+      transform: rotate(0deg) rotate(319.5deg);
+    }
+    22.5% {
+      /* circlePercentage(142.2, 75); */
+      stroke-dashoffset: 45.5216775505;
+      transform: rotate(0deg) rotate(324deg);
+    }
+    22.8125% {
+      /* circlePercentage(143.91328125, 75); */
+      stroke-dashoffset: 44.5797519875;
+      transform: rotate(0deg) rotate(328.5deg);
+    }
+    23.125% {
+      /* circlePercentage(145.44375, 75); */
+      stroke-dashoffset: 43.7383328458;
+      transform: rotate(0deg) rotate(333deg);
+    }
+    23.4375% {
+      /* circlePercentage(146.77734375, 75); */
+      stroke-dashoffset: 43.0051513884;
+      transform: rotate(0deg) rotate(337.5deg);
+    }
+    23.75% {
+      /* circlePercentage(147.9, 75); */
+      stroke-dashoffset: 42.3879388786;
+      transform: rotate(0deg) rotate(342deg);
+    }
+    24.0625% {
+      /* circlePercentage(148.79765625, 75); */
+      stroke-dashoffset: 41.8944265795;
+      transform: rotate(0deg) rotate(346.5deg);
+    }
+    24.375% {
+      /* circlePercentage(149.45625, 75); */
+      stroke-dashoffset: 41.5323457543;
+      transform: rotate(0deg) rotate(351deg);
+    }
+    24.6875% {
+      /* circlePercentage(149.86171875, 75); */
+      stroke-dashoffset: 41.3094276662;
+      transform: rotate(0deg) rotate(355.5deg);
+    }
+    25% {
+      /* circlePercentage(149.5, 75); */
+      stroke-dashoffset: 41.5082929356;
+      transform: rotate(0deg) rotate(360deg);
+    }
+    /* Ease-in 0-75%  */
+    25.0001% {
+      /* circlePercentage(0.5, 75); */
+      stroke-dashoffset: 123.4253213779;
+      transform: rotate(-90deg) rotate(0deg);
+    }
+    25.3125% {
+      /* circlePercentage(2.1675, 75); */
+      stroke-dashoffset: 122.5085653717;
+      transform: rotate(-90deg) rotate(4.5deg);
+    }
+    25.625% {
+      /* circlePercentage(4.1775, 75); */
+      stroke-dashoffset: 121.4035101558;
+      transform: rotate(-90deg) rotate(9deg);
+    }
+    25.9375% {
+      /* circlePercentage(6.04125, 75); */
+      stroke-dashoffset: 120.3788600769;
+      transform: rotate(-90deg) rotate(13.5deg);
+    }
+    26.25% {
+      /* circlePercentage(7.77, 75); */
+      stroke-dashoffset: 119.4284301244;
+      transform: rotate(-90deg) rotate(18deg);
+    }
+    26.5625% {
+      /* circlePercentage(9.375, 75); */
+      stroke-dashoffset: 118.5460352878;
+      transform: rotate(-90deg) rotate(22.5deg);
+    }
+    26.875% {
+      /* circlePercentage(10.8675, 75); */
+      stroke-dashoffset: 117.7254905566;
+      transform: rotate(-90deg) rotate(27deg);
+    }
+    27.1875% {
+      /* circlePercentage(12.25875, 75); */
+      stroke-dashoffset: 116.9606109202;
+      transform: rotate(-90deg) rotate(31.5deg);
+    }
+    27.5% {
+      /* circlePercentage(13.56, 75); */
+      stroke-dashoffset: 116.2452113681;
+      transform: rotate(-90deg) rotate(36deg);
+    }
+    27.8125% {
+      /* circlePercentage(14.7825, 75); */
+      stroke-dashoffset: 115.5731068898;
+      transform: rotate(-90deg) rotate(40.5deg);
+    }
+    28.125% {
+      /* circlePercentage(15.9375, 75); */
+      stroke-dashoffset: 114.9381124747;
+      transform: rotate(-90deg) rotate(45deg);
+    }
+    28.4375% {
+      /* circlePercentage(17.03625, 75); */
+      stroke-dashoffset: 114.3340431123;
+      transform: rotate(-90deg) rotate(49.5deg);
+    }
+    28.75% {
+      /* circlePercentage(18.09, 75); */
+      stroke-dashoffset: 113.754713792;
+      transform: rotate(-90deg) rotate(54deg);
+    }
+    29.0625% {
+      /* circlePercentage(19.11, 75); */
+      stroke-dashoffset: 113.1939395033;
+      transform: rotate(-90deg) rotate(58.5deg);
+    }
+    29.375% {
+      /* circlePercentage(20.1075, 75); */
+      stroke-dashoffset: 112.6455352357;
+      transform: rotate(-90deg) rotate(63deg);
+    }
+    29.6875% {
+      /* circlePercentage(21.09375, 75); */
+      stroke-dashoffset: 112.1033159787;
+      transform: rotate(-90deg) rotate(67.5deg);
+    }
+    30% {
+      /* circlePercentage(22.08, 75); */
+      stroke-dashoffset: 111.5610967216;
+      transform: rotate(-90deg) rotate(72deg);
+    }
+    30.3125% {
+      /* circlePercentage(23.0775, 75); */
+      stroke-dashoffset: 111.012692454;
+      transform: rotate(-90deg) rotate(76.5deg);
+    }
+    30.625% {
+      /* circlePercentage(24.0975, 75); */
+      stroke-dashoffset: 110.4519181654;
+      transform: rotate(-90deg) rotate(81deg);
+    }
+    30.9375% {
+      /* circlePercentage(25.15125, 75); */
+      stroke-dashoffset: 109.8725888451;
+      transform: rotate(-90deg) rotate(85.5deg);
+    }
+    31.25% {
+      /* circlePercentage(26.25, 75); */
+      stroke-dashoffset: 109.2685194827;
+      transform: rotate(-90deg) rotate(90deg);
+    }
+    31.5625% {
+      /* circlePercentage(27.405, 75); */
+      stroke-dashoffset: 108.6335250676;
+      transform: rotate(-90deg) rotate(94.5deg);
+    }
+    31.875% {
+      /* circlePercentage(28.6275, 75); */
+      stroke-dashoffset: 107.9614205892;
+      transform: rotate(-90deg) rotate(99deg);
+    }
+    32.1875% {
+      /* circlePercentage(29.92875, 75); */
+      stroke-dashoffset: 107.2460210372;
+      transform: rotate(-90deg) rotate(103.5deg);
+    }
+    32.5% {
+      /* circlePercentage(31.32, 75); */
+      stroke-dashoffset: 106.4811414008;
+      transform: rotate(-90deg) rotate(108deg);
+    }
+    32.8125% {
+      /* circlePercentage(32.8125, 75); */
+      stroke-dashoffset: 105.6605966696;
+      transform: rotate(-90deg) rotate(112.5deg);
+    }
+    33.125% {
+      /* circlePercentage(34.4175, 75); */
+      stroke-dashoffset: 104.778201833;
+      transform: rotate(-90deg) rotate(117deg);
+    }
+    33.4375% {
+      /* circlePercentage(36.14625, 75); */
+      stroke-dashoffset: 103.8277718805;
+      transform: rotate(-90deg) rotate(121.5deg);
+    }
+    33.75% {
+      /* circlePercentage(38.01, 75); */
+      stroke-dashoffset: 102.8031218016;
+      transform: rotate(-90deg) rotate(126deg);
+    }
+    34.0625% {
+      /* circlePercentage(40.02, 75); */
+      stroke-dashoffset: 101.6980665857;
+      transform: rotate(-90deg) rotate(130.5deg);
+    }
+    34.375% {
+      /* circlePercentage(42.1875, 75); */
+      stroke-dashoffset: 100.5064212223;
+      transform: rotate(-90deg) rotate(135deg);
+    }
+    34.6875% {
+      /* circlePercentage(44.52375, 75); */
+      stroke-dashoffset: 99.2220007008;
+      transform: rotate(-90deg) rotate(139.5deg);
+    }
+    35% {
+      /* circlePercentage(47.04, 75); */
+      stroke-dashoffset: 97.8386200108;
+      transform: rotate(-90deg) rotate(144deg);
+    }
+    35.3125% {
+      /* circlePercentage(49.7475, 75); */
+      stroke-dashoffset: 96.3500941416;
+      transform: rotate(-90deg) rotate(148.5deg);
+    }
+    35.625% {
+      /* circlePercentage(52.6575, 75); */
+      stroke-dashoffset: 94.7502380827;
+      transform: rotate(-90deg) rotate(153deg);
+    }
+    35.9375% {
+      /* circlePercentage(55.78125, 75); */
+      stroke-dashoffset: 93.0328668237;
+      transform: rotate(-90deg) rotate(157.5deg);
+    }
+    36.25% {
+      /* circlePercentage(59.13, 75); */
+      stroke-dashoffset: 91.1917953539;
+      transform: rotate(-90deg) rotate(162deg);
+    }
+    36.5625% {
+      /* circlePercentage(62.715, 75); */
+      stroke-dashoffset: 89.2208386629;
+      transform: rotate(-90deg) rotate(166.5deg);
+    }
+    36.875% {
+      /* circlePercentage(66.5475, 75); */
+      stroke-dashoffset: 87.11381174;
+      transform: rotate(-90deg) rotate(171deg);
+    }
+    37.1875% {
+      /* circlePercentage(70.63875, 75); */
+      stroke-dashoffset: 84.8645295748;
+      transform: rotate(-90deg) rotate(175.5deg);
+    }
+    37.5% {
+      /* circlePercentage(75, 75); */
+      stroke-dashoffset: 82.4668071567;
+      transform: rotate(-90deg) rotate(180deg);
+    }
+    /* Ease-out 75-150%  */
+    37.8125% {
+      /* circlePercentage(75.13828125, 75); */
+      stroke-dashoffset: 82.3907830689;
+      transform: rotate(-90deg) rotate(184.5deg);
+    }
+    38.125% {
+      /* circlePercentage(75.54375, 75); */
+      stroke-dashoffset: 82.1678649808;
+      transform: rotate(-90deg) rotate(189deg);
+    }
+    38.4375% {
+      /* circlePercentage(76.20234375, 75); */
+      stroke-dashoffset: 81.8057841556;
+      transform: rotate(-90deg) rotate(193.5deg);
+    }
+    38.75% {
+      /* circlePercentage(77.1, 75); */
+      stroke-dashoffset: 81.3122718565;
+      transform: rotate(-90deg) rotate(198deg);
+    }
+    39.0625% {
+      /* circlePercentage(78.22265625, 75); */
+      stroke-dashoffset: 80.6950593467;
+      transform: rotate(-90deg) rotate(202.5deg);
+    }
+    39.375% {
+      /* circlePercentage(79.55625, 75); */
+      stroke-dashoffset: 79.9618778894;
+      transform: rotate(-90deg) rotate(207deg);
+    }
+    39.6875% {
+      /* circlePercentage(81.08671875, 75); */
+      stroke-dashoffset: 79.1204587476;
+      transform: rotate(-90deg) rotate(211.5deg);
+    }
+    40% {
+      /* circlePercentage(82.8, 75); */
+      stroke-dashoffset: 78.1785331846;
+      transform: rotate(-90deg) rotate(216deg);
+    }
+    40.3125% {
+      /* circlePercentage(84.68203125, 75); */
+      stroke-dashoffset: 77.1438324635;
+      transform: rotate(-90deg) rotate(220.5deg);
+    }
+    40.625% {
+      /* circlePercentage(86.71875, 75); */
+      stroke-dashoffset: 76.0240878476;
+      transform: rotate(-90deg) rotate(225deg);
+    }
+    40.9375% {
+      /* circlePercentage(88.89609375, 75); */
+      stroke-dashoffset: 74.8270306;
+      transform: rotate(-90deg) rotate(229.5deg);
+    }
+    41.25% {
+      /* circlePercentage(91.2, 75); */
+      stroke-dashoffset: 73.5603919838;
+      transform: rotate(-90deg) rotate(234deg);
+    }
+    41.5625% {
+      /* circlePercentage(93.61640625, 75); */
+      stroke-dashoffset: 72.2319032623;
+      transform: rotate(-90deg) rotate(238.5deg);
+    }
+    41.875% {
+      /* circlePercentage(96.13125, 75); */
+      stroke-dashoffset: 70.8492956985;
+      transform: rotate(-90deg) rotate(243deg);
+    }
+    42.1875% {
+      /* circlePercentage(98.73046875, 75); */
+      stroke-dashoffset: 69.4203005558;
+      transform: rotate(-90deg) rotate(247.5deg);
+    }
+    42.5% {
+      /* circlePercentage(101.4, 75); */
+      stroke-dashoffset: 67.9526490972;
+      transform: rotate(-90deg) rotate(252deg);
+    }
+    42.8125% {
+      /* circlePercentage(104.12578125, 75); */
+      stroke-dashoffset: 66.4540725859;
+      transform: rotate(-90deg) rotate(256.5deg);
+    }
+    43.125% {
+      /* circlePercentage(106.89375, 75); */
+      stroke-dashoffset: 64.932302285;
+      transform: rotate(-90deg) rotate(261deg);
+    }
+    43.4375% {
+      /* circlePercentage(109.68984375, 75); */
+      stroke-dashoffset: 63.3950694579;
+      transform: rotate(-90deg) rotate(265.5deg);
+    }
+    43.75% {
+      /* circlePercentage(112.5, 75); */
+      stroke-dashoffset: 61.8501053676;
+      transform: rotate(-90deg) rotate(270deg);
+    }
+    44.0625% {
+      /* circlePercentage(115.31015625, 75); */
+      stroke-dashoffset: 60.3051412772;
+      transform: rotate(-90deg) rotate(274.5deg);
+    }
+    44.375% {
+      /* circlePercentage(118.10625, 75); */
+      stroke-dashoffset: 58.7679084501;
+      transform: rotate(-90deg) rotate(279deg);
+    }
+    44.6875% {
+      /* circlePercentage(120.87421875, 75); */
+      stroke-dashoffset: 57.2461381493;
+      transform: rotate(-90deg) rotate(283.5deg);
+    }
+    45% {
+      /* circlePercentage(123.6, 75); */
+      stroke-dashoffset: 55.747561638;
+      transform: rotate(-90deg) rotate(288deg);
+    }
+    45.3125% {
+      /* circlePercentage(126.26953125, 75); */
+      stroke-dashoffset: 54.2799101793;
+      transform: rotate(-90deg) rotate(292.5deg);
+    }
+    45.625% {
+      /* circlePercentage(128.86875, 75); */
+      stroke-dashoffset: 52.8509150366;
+      transform: rotate(-90deg) rotate(297deg);
+    }
+    45.9375% {
+      /* circlePercentage(131.38359375, 75); */
+      stroke-dashoffset: 51.4683074728;
+      transform: rotate(-90deg) rotate(301.5deg);
+    }
+    46.25% {
+      /* circlePercentage(133.8, 75); */
+      stroke-dashoffset: 50.1398187513;
+      transform: rotate(-90deg) rotate(306deg);
+    }
+    46.5625% {
+      /* circlePercentage(136.10390625, 75); */
+      stroke-dashoffset: 48.8731801351;
+      transform: rotate(-90deg) rotate(310.5deg);
+    }
+    46.875% {
+      /* circlePercentage(138.28125, 75); */
+      stroke-dashoffset: 47.6761228875;
+      transform: rotate(-90deg) rotate(315deg);
+    }
+    47.1875% {
+      /* circlePercentage(140.31796875, 75); */
+      stroke-dashoffset: 46.5563782716;
+      transform: rotate(-90deg) rotate(319.5deg);
+    }
+    47.5% {
+      /* circlePercentage(142.2, 75); */
+      stroke-dashoffset: 45.5216775505;
+      transform: rotate(-90deg) rotate(324deg);
+    }
+    47.8125% {
+      /* circlePercentage(143.91328125, 75); */
+      stroke-dashoffset: 44.5797519875;
+      transform: rotate(-90deg) rotate(328.5deg);
+    }
+    48.125% {
+      /* circlePercentage(145.44375, 75); */
+      stroke-dashoffset: 43.7383328458;
+      transform: rotate(-90deg) rotate(333deg);
+    }
+    48.4375% {
+      /* circlePercentage(146.77734375, 75); */
+      stroke-dashoffset: 43.0051513884;
+      transform: rotate(-90deg) rotate(337.5deg);
+    }
+    48.75% {
+      /* circlePercentage(147.9, 75); */
+      stroke-dashoffset: 42.3879388786;
+      transform: rotate(-90deg) rotate(342deg);
+    }
+    49.0625% {
+      /* circlePercentage(148.79765625, 75); */
+      stroke-dashoffset: 41.8944265795;
+      transform: rotate(-90deg) rotate(346.5deg);
+    }
+    49.375% {
+      /* circlePercentage(149.45625, 75); */
+      stroke-dashoffset: 41.5323457543;
+      transform: rotate(-90deg) rotate(351deg);
+    }
+    49.6875% {
+      /* circlePercentage(149.86171875, 75); */
+      stroke-dashoffset: 41.3094276662;
+      transform: rotate(-90deg) rotate(355.5deg);
+    }
+    50% {
+      /* circlePercentage(149.5, 75); */
+      stroke-dashoffset: 41.5082929356;
+      transform: rotate(-90deg) rotate(360deg);
+    }
+    /* Ease-in 0-75%  */
+    50.0001% {
+      /* circlePercentage(0.5, 75); */
+      stroke-dashoffset: 123.4253213779;
+      transform: rotate(-180deg) rotate(0deg);
+    }
+    50.3125% {
+      /* circlePercentage(2.1675, 75); */
+      stroke-dashoffset: 122.5085653717;
+      transform: rotate(-180deg) rotate(4.5deg);
+    }
+    50.625% {
+      /* circlePercentage(4.1775, 75); */
+      stroke-dashoffset: 121.4035101558;
+      transform: rotate(-180deg) rotate(9deg);
+    }
+    50.9375% {
+      /* circlePercentage(6.04125, 75); */
+      stroke-dashoffset: 120.3788600769;
+      transform: rotate(-180deg) rotate(13.5deg);
+    }
+    51.25% {
+      /* circlePercentage(7.77, 75); */
+      stroke-dashoffset: 119.4284301244;
+      transform: rotate(-180deg) rotate(18deg);
+    }
+    51.5625% {
+      /* circlePercentage(9.375, 75); */
+      stroke-dashoffset: 118.5460352878;
+      transform: rotate(-180deg) rotate(22.5deg);
+    }
+    51.875% {
+      /* circlePercentage(10.8675, 75); */
+      stroke-dashoffset: 117.7254905566;
+      transform: rotate(-180deg) rotate(27deg);
+    }
+    52.1875% {
+      /* circlePercentage(12.25875, 75); */
+      stroke-dashoffset: 116.9606109202;
+      transform: rotate(-180deg) rotate(31.5deg);
+    }
+    52.5% {
+      /* circlePercentage(13.56, 75); */
+      stroke-dashoffset: 116.2452113681;
+      transform: rotate(-180deg) rotate(36deg);
+    }
+    52.8125% {
+      /* circlePercentage(14.7825, 75); */
+      stroke-dashoffset: 115.5731068898;
+      transform: rotate(-180deg) rotate(40.5deg);
+    }
+    53.125% {
+      /* circlePercentage(15.9375, 75); */
+      stroke-dashoffset: 114.9381124747;
+      transform: rotate(-180deg) rotate(45deg);
+    }
+    53.4375% {
+      /* circlePercentage(17.03625, 75); */
+      stroke-dashoffset: 114.3340431123;
+      transform: rotate(-180deg) rotate(49.5deg);
+    }
+    53.75% {
+      /* circlePercentage(18.09, 75); */
+      stroke-dashoffset: 113.754713792;
+      transform: rotate(-180deg) rotate(54deg);
+    }
+    54.0625% {
+      /* circlePercentage(19.11, 75); */
+      stroke-dashoffset: 113.1939395033;
+      transform: rotate(-180deg) rotate(58.5deg);
+    }
+    54.375% {
+      /* circlePercentage(20.1075, 75); */
+      stroke-dashoffset: 112.6455352357;
+      transform: rotate(-180deg) rotate(63deg);
+    }
+    54.6875% {
+      /* circlePercentage(21.09375, 75); */
+      stroke-dashoffset: 112.1033159787;
+      transform: rotate(-180deg) rotate(67.5deg);
+    }
+    55% {
+      /* circlePercentage(22.08, 75); */
+      stroke-dashoffset: 111.5610967216;
+      transform: rotate(-180deg) rotate(72deg);
+    }
+    55.3125% {
+      /* circlePercentage(23.0775, 75); */
+      stroke-dashoffset: 111.012692454;
+      transform: rotate(-180deg) rotate(76.5deg);
+    }
+    55.625% {
+      /* circlePercentage(24.0975, 75); */
+      stroke-dashoffset: 110.4519181654;
+      transform: rotate(-180deg) rotate(81deg);
+    }
+    55.9375% {
+      /* circlePercentage(25.15125, 75); */
+      stroke-dashoffset: 109.8725888451;
+      transform: rotate(-180deg) rotate(85.5deg);
+    }
+    56.25% {
+      /* circlePercentage(26.25, 75); */
+      stroke-dashoffset: 109.2685194827;
+      transform: rotate(-180deg) rotate(90deg);
+    }
+    56.5625% {
+      /* circlePercentage(27.405, 75); */
+      stroke-dashoffset: 108.6335250676;
+      transform: rotate(-180deg) rotate(94.5deg);
+    }
+    56.875% {
+      /* circlePercentage(28.6275, 75); */
+      stroke-dashoffset: 107.9614205892;
+      transform: rotate(-180deg) rotate(99deg);
+    }
+    57.1875% {
+      /* circlePercentage(29.92875, 75); */
+      stroke-dashoffset: 107.2460210372;
+      transform: rotate(-180deg) rotate(103.5deg);
+    }
+    57.5% {
+      /* circlePercentage(31.32, 75); */
+      stroke-dashoffset: 106.4811414008;
+      transform: rotate(-180deg) rotate(108deg);
+    }
+    57.8125% {
+      /* circlePercentage(32.8125, 75); */
+      stroke-dashoffset: 105.6605966696;
+      transform: rotate(-180deg) rotate(112.5deg);
+    }
+    58.125% {
+      /* circlePercentage(34.4175, 75); */
+      stroke-dashoffset: 104.778201833;
+      transform: rotate(-180deg) rotate(117deg);
+    }
+    58.4375% {
+      /* circlePercentage(36.14625, 75); */
+      stroke-dashoffset: 103.8277718805;
+      transform: rotate(-180deg) rotate(121.5deg);
+    }
+    58.75% {
+      /* circlePercentage(38.01, 75); */
+      stroke-dashoffset: 102.8031218016;
+      transform: rotate(-180deg) rotate(126deg);
+    }
+    59.0625% {
+      /* circlePercentage(40.02, 75); */
+      stroke-dashoffset: 101.6980665857;
+      transform: rotate(-180deg) rotate(130.5deg);
+    }
+    59.375% {
+      /* circlePercentage(42.1875, 75); */
+      stroke-dashoffset: 100.5064212223;
+      transform: rotate(-180deg) rotate(135deg);
+    }
+    59.6875% {
+      /* circlePercentage(44.52375, 75); */
+      stroke-dashoffset: 99.2220007008;
+      transform: rotate(-180deg) rotate(139.5deg);
+    }
+    60% {
+      /* circlePercentage(47.04, 75); */
+      stroke-dashoffset: 97.8386200108;
+      transform: rotate(-180deg) rotate(144deg);
+    }
+    60.3125% {
+      /* circlePercentage(49.7475, 75); */
+      stroke-dashoffset: 96.3500941416;
+      transform: rotate(-180deg) rotate(148.5deg);
+    }
+    60.625% {
+      /* circlePercentage(52.6575, 75); */
+      stroke-dashoffset: 94.7502380827;
+      transform: rotate(-180deg) rotate(153deg);
+    }
+    60.9375% {
+      /* circlePercentage(55.78125, 75); */
+      stroke-dashoffset: 93.0328668237;
+      transform: rotate(-180deg) rotate(157.5deg);
+    }
+    61.25% {
+      /* circlePercentage(59.13, 75); */
+      stroke-dashoffset: 91.1917953539;
+      transform: rotate(-180deg) rotate(162deg);
+    }
+    61.5625% {
+      /* circlePercentage(62.715, 75); */
+      stroke-dashoffset: 89.2208386629;
+      transform: rotate(-180deg) rotate(166.5deg);
+    }
+    61.875% {
+      /* circlePercentage(66.5475, 75); */
+      stroke-dashoffset: 87.11381174;
+      transform: rotate(-180deg) rotate(171deg);
+    }
+    62.1875% {
+      /* circlePercentage(70.63875, 75); */
+      stroke-dashoffset: 84.8645295748;
+      transform: rotate(-180deg) rotate(175.5deg);
+    }
+    62.5% {
+      /* circlePercentage(75, 75); */
+      stroke-dashoffset: 82.4668071567;
+      transform: rotate(-180deg) rotate(180deg);
+    }
+    /* Ease-out 75-150%  */
+    62.8125% {
+      /* circlePercentage(75.13828125, 75); */
+      stroke-dashoffset: 82.3907830689;
+      transform: rotate(-180deg) rotate(184.5deg);
+    }
+    63.125% {
+      /* circlePercentage(75.54375, 75); */
+      stroke-dashoffset: 82.1678649808;
+      transform: rotate(-180deg) rotate(189deg);
+    }
+    63.4375% {
+      /* circlePercentage(76.20234375, 75); */
+      stroke-dashoffset: 81.8057841556;
+      transform: rotate(-180deg) rotate(193.5deg);
+    }
+    63.75% {
+      /* circlePercentage(77.1, 75); */
+      stroke-dashoffset: 81.3122718565;
+      transform: rotate(-180deg) rotate(198deg);
+    }
+    64.0625% {
+      /* circlePercentage(78.22265625, 75); */
+      stroke-dashoffset: 80.6950593467;
+      transform: rotate(-180deg) rotate(202.5deg);
+    }
+    64.375% {
+      /* circlePercentage(79.55625, 75); */
+      stroke-dashoffset: 79.9618778894;
+      transform: rotate(-180deg) rotate(207deg);
+    }
+    64.6875% {
+      /* circlePercentage(81.08671875, 75); */
+      stroke-dashoffset: 79.1204587476;
+      transform: rotate(-180deg) rotate(211.5deg);
+    }
+    65% {
+      /* circlePercentage(82.8, 75); */
+      stroke-dashoffset: 78.1785331846;
+      transform: rotate(-180deg) rotate(216deg);
+    }
+    65.3125% {
+      /* circlePercentage(84.68203125, 75); */
+      stroke-dashoffset: 77.1438324635;
+      transform: rotate(-180deg) rotate(220.5deg);
+    }
+    65.625% {
+      /* circlePercentage(86.71875, 75); */
+      stroke-dashoffset: 76.0240878476;
+      transform: rotate(-180deg) rotate(225deg);
+    }
+    65.9375% {
+      /* circlePercentage(88.89609375, 75); */
+      stroke-dashoffset: 74.8270306;
+      transform: rotate(-180deg) rotate(229.5deg);
+    }
+    66.25% {
+      /* circlePercentage(91.2, 75); */
+      stroke-dashoffset: 73.5603919838;
+      transform: rotate(-180deg) rotate(234deg);
+    }
+    66.5625% {
+      /* circlePercentage(93.61640625, 75); */
+      stroke-dashoffset: 72.2319032623;
+      transform: rotate(-180deg) rotate(238.5deg);
+    }
+    66.875% {
+      /* circlePercentage(96.13125, 75); */
+      stroke-dashoffset: 70.8492956985;
+      transform: rotate(-180deg) rotate(243deg);
+    }
+    67.1875% {
+      /* circlePercentage(98.73046875, 75); */
+      stroke-dashoffset: 69.4203005558;
+      transform: rotate(-180deg) rotate(247.5deg);
+    }
+    67.5% {
+      /* circlePercentage(101.4, 75); */
+      stroke-dashoffset: 67.9526490972;
+      transform: rotate(-180deg) rotate(252deg);
+    }
+    67.8125% {
+      /* circlePercentage(104.12578125, 75); */
+      stroke-dashoffset: 66.4540725859;
+      transform: rotate(-180deg) rotate(256.5deg);
+    }
+    68.125% {
+      /* circlePercentage(106.89375, 75); */
+      stroke-dashoffset: 64.932302285;
+      transform: rotate(-180deg) rotate(261deg);
+    }
+    68.4375% {
+      /* circlePercentage(109.68984375, 75); */
+      stroke-dashoffset: 63.3950694579;
+      transform: rotate(-180deg) rotate(265.5deg);
+    }
+    68.75% {
+      /* circlePercentage(112.5, 75); */
+      stroke-dashoffset: 61.8501053676;
+      transform: rotate(-180deg) rotate(270deg);
+    }
+    69.0625% {
+      /* circlePercentage(115.31015625, 75); */
+      stroke-dashoffset: 60.3051412772;
+      transform: rotate(-180deg) rotate(274.5deg);
+    }
+    69.375% {
+      /* circlePercentage(118.10625, 75); */
+      stroke-dashoffset: 58.7679084501;
+      transform: rotate(-180deg) rotate(279deg);
+    }
+    69.6875% {
+      /* circlePercentage(120.87421875, 75); */
+      stroke-dashoffset: 57.2461381493;
+      transform: rotate(-180deg) rotate(283.5deg);
+    }
+    70% {
+      /* circlePercentage(123.6, 75); */
+      stroke-dashoffset: 55.747561638;
+      transform: rotate(-180deg) rotate(288deg);
+    }
+    70.3125% {
+      /* circlePercentage(126.26953125, 75); */
+      stroke-dashoffset: 54.2799101793;
+      transform: rotate(-180deg) rotate(292.5deg);
+    }
+    70.625% {
+      /* circlePercentage(128.86875, 75); */
+      stroke-dashoffset: 52.8509150366;
+      transform: rotate(-180deg) rotate(297deg);
+    }
+    70.9375% {
+      /* circlePercentage(131.38359375, 75); */
+      stroke-dashoffset: 51.4683074728;
+      transform: rotate(-180deg) rotate(301.5deg);
+    }
+    71.25% {
+      /* circlePercentage(133.8, 75); */
+      stroke-dashoffset: 50.1398187513;
+      transform: rotate(-180deg) rotate(306deg);
+    }
+    71.5625% {
+      /* circlePercentage(136.10390625, 75); */
+      stroke-dashoffset: 48.8731801351;
+      transform: rotate(-180deg) rotate(310.5deg);
+    }
+    71.875% {
+      /* circlePercentage(138.28125, 75); */
+      stroke-dashoffset: 47.6761228875;
+      transform: rotate(-180deg) rotate(315deg);
+    }
+    72.1875% {
+      /* circlePercentage(140.31796875, 75); */
+      stroke-dashoffset: 46.5563782716;
+      transform: rotate(-180deg) rotate(319.5deg);
+    }
+    72.5% {
+      /* circlePercentage(142.2, 75); */
+      stroke-dashoffset: 45.5216775505;
+      transform: rotate(-180deg) rotate(324deg);
+    }
+    72.8125% {
+      /* circlePercentage(143.91328125, 75); */
+      stroke-dashoffset: 44.5797519875;
+      transform: rotate(-180deg) rotate(328.5deg);
+    }
+    73.125% {
+      /* circlePercentage(145.44375, 75); */
+      stroke-dashoffset: 43.7383328458;
+      transform: rotate(-180deg) rotate(333deg);
+    }
+    73.4375% {
+      /* circlePercentage(146.77734375, 75); */
+      stroke-dashoffset: 43.0051513884;
+      transform: rotate(-180deg) rotate(337.5deg);
+    }
+    73.75% {
+      /* circlePercentage(147.9, 75); */
+      stroke-dashoffset: 42.3879388786;
+      transform: rotate(-180deg) rotate(342deg);
+    }
+    74.0625% {
+      /* circlePercentage(148.79765625, 75); */
+      stroke-dashoffset: 41.8944265795;
+      transform: rotate(-180deg) rotate(346.5deg);
+    }
+    74.375% {
+      /* circlePercentage(149.45625, 75); */
+      stroke-dashoffset: 41.5323457543;
+      transform: rotate(-180deg) rotate(351deg);
+    }
+    74.6875% {
+      /* circlePercentage(149.86171875, 75); */
+      stroke-dashoffset: 41.3094276662;
+      transform: rotate(-180deg) rotate(355.5deg);
+    }
+    75% {
+      /* circlePercentage(149.5, 75); */
+      stroke-dashoffset: 41.5082929356;
+      transform: rotate(-180deg) rotate(360deg);
+    }
+    /* Ease-in 0-75%  */
+    75.0001% {
+      /* circlePercentage(0.5, 75); */
+      stroke-dashoffset: 123.4253213779;
+      transform: rotate(-270deg) rotate(0deg);
+    }
+    75.3125% {
+      /* circlePercentage(2.1675, 75); */
+      stroke-dashoffset: 122.5085653717;
+      transform: rotate(-270deg) rotate(4.5deg);
+    }
+    75.625% {
+      /* circlePercentage(4.1775, 75); */
+      stroke-dashoffset: 121.4035101558;
+      transform: rotate(-270deg) rotate(9deg);
+    }
+    75.9375% {
+      /* circlePercentage(6.04125, 75); */
+      stroke-dashoffset: 120.3788600769;
+      transform: rotate(-270deg) rotate(13.5deg);
+    }
+    76.25% {
+      /* circlePercentage(7.77, 75); */
+      stroke-dashoffset: 119.4284301244;
+      transform: rotate(-270deg) rotate(18deg);
+    }
+    76.5625% {
+      /* circlePercentage(9.375, 75); */
+      stroke-dashoffset: 118.5460352878;
+      transform: rotate(-270deg) rotate(22.5deg);
+    }
+    76.875% {
+      /* circlePercentage(10.8675, 75); */
+      stroke-dashoffset: 117.7254905566;
+      transform: rotate(-270deg) rotate(27deg);
+    }
+    77.1875% {
+      /* circlePercentage(12.25875, 75); */
+      stroke-dashoffset: 116.9606109202;
+      transform: rotate(-270deg) rotate(31.5deg);
+    }
+    77.5% {
+      /* circlePercentage(13.56, 75); */
+      stroke-dashoffset: 116.2452113681;
+      transform: rotate(-270deg) rotate(36deg);
+    }
+    77.8125% {
+      /* circlePercentage(14.7825, 75); */
+      stroke-dashoffset: 115.5731068898;
+      transform: rotate(-270deg) rotate(40.5deg);
+    }
+    78.125% {
+      /* circlePercentage(15.9375, 75); */
+      stroke-dashoffset: 114.9381124747;
+      transform: rotate(-270deg) rotate(45deg);
+    }
+    78.4375% {
+      /* circlePercentage(17.03625, 75); */
+      stroke-dashoffset: 114.3340431123;
+      transform: rotate(-270deg) rotate(49.5deg);
+    }
+    78.75% {
+      /* circlePercentage(18.09, 75); */
+      stroke-dashoffset: 113.754713792;
+      transform: rotate(-270deg) rotate(54deg);
+    }
+    79.0625% {
+      /* circlePercentage(19.11, 75); */
+      stroke-dashoffset: 113.1939395033;
+      transform: rotate(-270deg) rotate(58.5deg);
+    }
+    79.375% {
+      /* circlePercentage(20.1075, 75); */
+      stroke-dashoffset: 112.6455352357;
+      transform: rotate(-270deg) rotate(63deg);
+    }
+    79.6875% {
+      /* circlePercentage(21.09375, 75); */
+      stroke-dashoffset: 112.1033159787;
+      transform: rotate(-270deg) rotate(67.5deg);
+    }
+    80% {
+      /* circlePercentage(22.08, 75); */
+      stroke-dashoffset: 111.5610967216;
+      transform: rotate(-270deg) rotate(72deg);
+    }
+    80.3125% {
+      /* circlePercentage(23.0775, 75); */
+      stroke-dashoffset: 111.012692454;
+      transform: rotate(-270deg) rotate(76.5deg);
+    }
+    80.625% {
+      /* circlePercentage(24.0975, 75); */
+      stroke-dashoffset: 110.4519181654;
+      transform: rotate(-270deg) rotate(81deg);
+    }
+    80.9375% {
+      /* circlePercentage(25.15125, 75); */
+      stroke-dashoffset: 109.8725888451;
+      transform: rotate(-270deg) rotate(85.5deg);
+    }
+    81.25% {
+      /* circlePercentage(26.25, 75); */
+      stroke-dashoffset: 109.2685194827;
+      transform: rotate(-270deg) rotate(90deg);
+    }
+    81.5625% {
+      /* circlePercentage(27.405, 75); */
+      stroke-dashoffset: 108.6335250676;
+      transform: rotate(-270deg) rotate(94.5deg);
+    }
+    81.875% {
+      /* circlePercentage(28.6275, 75); */
+      stroke-dashoffset: 107.9614205892;
+      transform: rotate(-270deg) rotate(99deg);
+    }
+    82.1875% {
+      /* circlePercentage(29.92875, 75); */
+      stroke-dashoffset: 107.2460210372;
+      transform: rotate(-270deg) rotate(103.5deg);
+    }
+    82.5% {
+      /* circlePercentage(31.32, 75); */
+      stroke-dashoffset: 106.4811414008;
+      transform: rotate(-270deg) rotate(108deg);
+    }
+    82.8125% {
+      /* circlePercentage(32.8125, 75); */
+      stroke-dashoffset: 105.6605966696;
+      transform: rotate(-270deg) rotate(112.5deg);
+    }
+    83.125% {
+      /* circlePercentage(34.4175, 75); */
+      stroke-dashoffset: 104.778201833;
+      transform: rotate(-270deg) rotate(117deg);
+    }
+    83.4375% {
+      /* circlePercentage(36.14625, 75); */
+      stroke-dashoffset: 103.8277718805;
+      transform: rotate(-270deg) rotate(121.5deg);
+    }
+    83.75% {
+      /* circlePercentage(38.01, 75); */
+      stroke-dashoffset: 102.8031218016;
+      transform: rotate(-270deg) rotate(126deg);
+    }
+    84.0625% {
+      /* circlePercentage(40.02, 75); */
+      stroke-dashoffset: 101.6980665857;
+      transform: rotate(-270deg) rotate(130.5deg);
+    }
+    84.375% {
+      /* circlePercentage(42.1875, 75); */
+      stroke-dashoffset: 100.5064212223;
+      transform: rotate(-270deg) rotate(135deg);
+    }
+    84.6875% {
+      /* circlePercentage(44.52375, 75); */
+      stroke-dashoffset: 99.2220007008;
+      transform: rotate(-270deg) rotate(139.5deg);
+    }
+    85% {
+      /* circlePercentage(47.04, 75); */
+      stroke-dashoffset: 97.8386200108;
+      transform: rotate(-270deg) rotate(144deg);
+    }
+    85.3125% {
+      /* circlePercentage(49.7475, 75); */
+      stroke-dashoffset: 96.3500941416;
+      transform: rotate(-270deg) rotate(148.5deg);
+    }
+    85.625% {
+      /* circlePercentage(52.6575, 75); */
+      stroke-dashoffset: 94.7502380827;
+      transform: rotate(-270deg) rotate(153deg);
+    }
+    85.9375% {
+      /* circlePercentage(55.78125, 75); */
+      stroke-dashoffset: 93.0328668237;
+      transform: rotate(-270deg) rotate(157.5deg);
+    }
+    86.25% {
+      /* circlePercentage(59.13, 75); */
+      stroke-dashoffset: 91.1917953539;
+      transform: rotate(-270deg) rotate(162deg);
+    }
+    86.5625% {
+      /* circlePercentage(62.715, 75); */
+      stroke-dashoffset: 89.2208386629;
+      transform: rotate(-270deg) rotate(166.5deg);
+    }
+    86.875% {
+      /* circlePercentage(66.5475, 75); */
+      stroke-dashoffset: 87.11381174;
+      transform: rotate(-270deg) rotate(171deg);
+    }
+    87.1875% {
+      /* circlePercentage(70.63875, 75); */
+      stroke-dashoffset: 84.8645295748;
+      transform: rotate(-270deg) rotate(175.5deg);
+    }
+    87.5% {
+      /* circlePercentage(75, 75); */
+      stroke-dashoffset: 82.4668071567;
+      transform: rotate(-270deg) rotate(180deg);
+    }
+    /* Ease-out 75-150%  */
+    87.8125% {
+      /* circlePercentage(75.13828125, 75); */
+      stroke-dashoffset: 82.3907830689;
+      transform: rotate(-270deg) rotate(184.5deg);
+    }
+    88.125% {
+      /* circlePercentage(75.54375, 75); */
+      stroke-dashoffset: 82.1678649808;
+      transform: rotate(-270deg) rotate(189deg);
+    }
+    88.4375% {
+      /* circlePercentage(76.20234375, 75); */
+      stroke-dashoffset: 81.8057841556;
+      transform: rotate(-270deg) rotate(193.5deg);
+    }
+    88.75% {
+      /* circlePercentage(77.1, 75); */
+      stroke-dashoffset: 81.3122718565;
+      transform: rotate(-270deg) rotate(198deg);
+    }
+    89.0625% {
+      /* circlePercentage(78.22265625, 75); */
+      stroke-dashoffset: 80.6950593467;
+      transform: rotate(-270deg) rotate(202.5deg);
+    }
+    89.375% {
+      /* circlePercentage(79.55625, 75); */
+      stroke-dashoffset: 79.9618778894;
+      transform: rotate(-270deg) rotate(207deg);
+    }
+    89.6875% {
+      /* circlePercentage(81.08671875, 75); */
+      stroke-dashoffset: 79.1204587476;
+      transform: rotate(-270deg) rotate(211.5deg);
+    }
+    90% {
+      /* circlePercentage(82.8, 75); */
+      stroke-dashoffset: 78.1785331846;
+      transform: rotate(-270deg) rotate(216deg);
+    }
+    90.3125% {
+      /* circlePercentage(84.68203125, 75); */
+      stroke-dashoffset: 77.1438324635;
+      transform: rotate(-270deg) rotate(220.5deg);
+    }
+    90.625% {
+      /* circlePercentage(86.71875, 75); */
+      stroke-dashoffset: 76.0240878476;
+      transform: rotate(-270deg) rotate(225deg);
+    }
+    90.9375% {
+      /* circlePercentage(88.89609375, 75); */
+      stroke-dashoffset: 74.8270306;
+      transform: rotate(-270deg) rotate(229.5deg);
+    }
+    91.25% {
+      /* circlePercentage(91.2, 75); */
+      stroke-dashoffset: 73.5603919838;
+      transform: rotate(-270deg) rotate(234deg);
+    }
+    91.5625% {
+      /* circlePercentage(93.61640625, 75); */
+      stroke-dashoffset: 72.2319032623;
+      transform: rotate(-270deg) rotate(238.5deg);
+    }
+    91.875% {
+      /* circlePercentage(96.13125, 75); */
+      stroke-dashoffset: 70.8492956985;
+      transform: rotate(-270deg) rotate(243deg);
+    }
+    92.1875% {
+      /* circlePercentage(98.73046875, 75); */
+      stroke-dashoffset: 69.4203005558;
+      transform: rotate(-270deg) rotate(247.5deg);
+    }
+    92.5% {
+      /* circlePercentage(101.4, 75); */
+      stroke-dashoffset: 67.9526490972;
+      transform: rotate(-270deg) rotate(252deg);
+    }
+    92.8125% {
+      /* circlePercentage(104.12578125, 75); */
+      stroke-dashoffset: 66.4540725859;
+      transform: rotate(-270deg) rotate(256.5deg);
+    }
+    93.125% {
+      /* circlePercentage(106.89375, 75); */
+      stroke-dashoffset: 64.932302285;
+      transform: rotate(-270deg) rotate(261deg);
+    }
+    93.4375% {
+      /* circlePercentage(109.68984375, 75); */
+      stroke-dashoffset: 63.3950694579;
+      transform: rotate(-270deg) rotate(265.5deg);
+    }
+    93.75% {
+      /* circlePercentage(112.5, 75); */
+      stroke-dashoffset: 61.8501053676;
+      transform: rotate(-270deg) rotate(270deg);
+    }
+    94.0625% {
+      /* circlePercentage(115.31015625, 75); */
+      stroke-dashoffset: 60.3051412772;
+      transform: rotate(-270deg) rotate(274.5deg);
+    }
+    94.375% {
+      /* circlePercentage(118.10625, 75); */
+      stroke-dashoffset: 58.7679084501;
+      transform: rotate(-270deg) rotate(279deg);
+    }
+    94.6875% {
+      /* circlePercentage(120.87421875, 75); */
+      stroke-dashoffset: 57.2461381493;
+      transform: rotate(-270deg) rotate(283.5deg);
+    }
+    95% {
+      /* circlePercentage(123.6, 75); */
+      stroke-dashoffset: 55.747561638;
+      transform: rotate(-270deg) rotate(288deg);
+    }
+    95.3125% {
+      /* circlePercentage(126.26953125, 75); */
+      stroke-dashoffset: 54.2799101793;
+      transform: rotate(-270deg) rotate(292.5deg);
+    }
+    95.625% {
+      /* circlePercentage(128.86875, 75); */
+      stroke-dashoffset: 52.8509150366;
+      transform: rotate(-270deg) rotate(297deg);
+    }
+    95.9375% {
+      /* circlePercentage(131.38359375, 75); */
+      stroke-dashoffset: 51.4683074728;
+      transform: rotate(-270deg) rotate(301.5deg);
+    }
+    96.25% {
+      /* circlePercentage(133.8, 75); */
+      stroke-dashoffset: 50.1398187513;
+      transform: rotate(-270deg) rotate(306deg);
+    }
+    96.5625% {
+      /* circlePercentage(136.10390625, 75); */
+      stroke-dashoffset: 48.8731801351;
+      transform: rotate(-270deg) rotate(310.5deg);
+    }
+    96.875% {
+      /* circlePercentage(138.28125, 75); */
+      stroke-dashoffset: 47.6761228875;
+      transform: rotate(-270deg) rotate(315deg);
+    }
+    97.1875% {
+      /* circlePercentage(140.31796875, 75); */
+      stroke-dashoffset: 46.5563782716;
+      transform: rotate(-270deg) rotate(319.5deg);
+    }
+    97.5% {
+      /* circlePercentage(142.2, 75); */
+      stroke-dashoffset: 45.5216775505;
+      transform: rotate(-270deg) rotate(324deg);
+    }
+    97.8125% {
+      /* circlePercentage(143.91328125, 75); */
+      stroke-dashoffset: 44.5797519875;
+      transform: rotate(-270deg) rotate(328.5deg);
+    }
+    98.125% {
+      /* circlePercentage(145.44375, 75); */
+      stroke-dashoffset: 43.7383328458;
+      transform: rotate(-270deg) rotate(333deg);
+    }
+    98.4375% {
+      /* circlePercentage(146.77734375, 75); */
+      stroke-dashoffset: 43.0051513884;
+      transform: rotate(-270deg) rotate(337.5deg);
+    }
+    98.75% {
+      /* circlePercentage(147.9, 75); */
+      stroke-dashoffset: 42.3879388786;
+      transform: rotate(-270deg) rotate(342deg);
+    }
+    99.0625% {
+      /* circlePercentage(148.79765625, 75); */
+      stroke-dashoffset: 41.8944265795;
+      transform: rotate(-270deg) rotate(346.5deg);
+    }
+    99.375% {
+      /* circlePercentage(149.45625, 75); */
+      stroke-dashoffset: 41.5323457543;
+      transform: rotate(-270deg) rotate(351deg);
+    }
+    99.6875% {
+      /* circlePercentage(149.86171875, 75); */
+      stroke-dashoffset: 41.3094276662;
+      transform: rotate(-270deg) rotate(355.5deg);
+    }
+    100% {
+      /* circlePercentage(149.5, 75); */
+      stroke-dashoffset: 41.5082929356;
+      transform: rotate(-270deg) rotate(360deg);
+    }
+  }
+  #indeterminate {
+    stroke-dasharray: 41.2334035784;
+    stroke-dashoffset: 123.6727217994;
+    animation: material-spin 5332ms linear infinite;
+    transform-origin: center center;
+  }
+  
+  #determinate {
+    stroke-dasharray: 54.9778714378;
+    stroke-dashoffset: 160.5353845984;
+    transition: stroke-dashoffset ease 2s;
+  }
+  
+  /* Page CSS */
+  .indeterminate-circle {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+  }
+  
+  /*.determinate-circle {
+    position: absolute;
+    left: 128px;
+    width: 64px;
+    height: 64px;
+  }*/
